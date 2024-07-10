@@ -1,0 +1,393 @@
+version: 2.1
+
+parameters:
+  region:
+    type: string
+    default: europe-west2
+
+orbs:
+  gcp-cli: circleci/gcp-cli@3.1.1
+  iac-scan: nukengprod/iac-scan@0.2.44
+
+executors:
+  node:
+    docker:
+      - image: cimg/node:20.8.1
+    resource_class: xlarge
+
+  terraform:
+    docker:
+      - image: hashicorp/terraform:1.1.7
+    resource_class: xlarge
+
+default-remote-docker: &default-remote-docker
+  setup_remote_docker:
+    version: 20.10.2
+    docker_layer_caching: false
+
+only_on_master_branch: &only_on_master_branch
+  filters:
+    branches:
+      only: master
+
+only_on_develop_branch: &only_on_develop_branch
+  filters:
+    branches:
+      only: develop
+
+only_on_pr_branch: &only_on_pr_branch
+  filters:
+    branches:
+      ignore:
+        - develop
+        - master
+
+commands:
+  setup_google_account:
+    description: setup google account
+    parameters:
+      environment:
+        type: string
+      project:
+        type: string
+    steps:
+      - gcp-cli/install
+      - run:
+          name: Request Credentials
+          command: |
+            if [[ "<< parameters.environment >>" == "prod" ]]; then
+              SERVICE_ACCOUNT_EMAIL=$GOOGLE_APPLICATION_DEPLOY_EMAIL_PROD
+              WIF_AUDIENCE=$WIF_AUDIENCE_PROD
+            else
+              SERVICE_ACCOUNT_EMAIL=$GOOGLE_APPLICATION_DEPLOY_EMAIL_STAGE
+              WIF_AUDIENCE=$WIF_AUDIENCE_STAGE
+            fi
+
+            gcloud iam workload-identity-pools create-cred-config \
+              $WIF_AUDIENCE \
+              --service-account=$SERVICE_ACCOUNT_EMAIL \
+              --credential-source-file="./tmp/oidc_token" \
+              --output-file="./tmp/google_service_account.json"
+
+      - run:
+          name: Setup Google Credentials
+          command: |
+            echo 'export GOOGLE_APPLICATION_CREDENTIALS="./tmp/google_service_account.json"' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Activate Google service account
+          command: |
+            source $BASH_ENV
+            if [[ "<< parameters.environment >>" == "prod" ]]; then
+              GOOGLE_APPLICATION_DEPLOY_EMAIL_TEMP=$GOOGLE_APPLICATION_DEPLOY_EMAIL_PROD
+            else
+              GOOGLE_APPLICATION_DEPLOY_EMAIL_TEMP=$GOOGLE_APPLICATION_DEPLOY_EMAIL_STAGE
+            fi
+
+            gcloud components update
+            gcloud config set project << parameters.project >>
+            gcloud auth login --brief --cred-file "./tmp/google_service_account.json" --quiet
+            gcloud auth configure-docker europe-west2-docker.pkg.dev --quiet
+
+  build_image:
+    parameters:
+      environment:
+        type: string
+      project:
+        type: string
+      service:
+        type: string
+    steps:
+      - run:
+          name: Create repository if not exists
+          command: |
+            ALL_REPOSITORIES=$(gcloud artifacts repositories list --project=<< parameters.project >> --location=europe-west2)
+            if [[ "$ALL_REPOSITORIES" == *"<< parameters.service >>"* ]]; then
+              echo "Repository already exists"
+            else
+              gcloud artifacts repositories create "<< parameters.service >>" \
+                --project=<< parameters.project >> \
+                --location=europe-west2 \
+                --repository-format=docker
+            fi
+      - run:
+          name: Build Docker image
+          command: |
+            source $BASH_ENV
+            BUILD_SHA="<< pipeline.git.revision >>"
+
+            IMAGE_REPOSITORY="europe-west2-docker.pkg.dev/<< parameters.project >>/<< parameters.service >>/<< parameters.service >>"
+
+            echo "export IMAGE_REPOSITORY=$IMAGE_REPOSITORY" >> $BASH_ENV
+            docker build \
+              --no-cache \
+              --pull \
+              --build-arg TARGET_ENV="<< parameters.environment >>"\
+              -t "$IMAGE_REPOSITORY:$BUILD_SHA" \
+              --file ./Dockerfile .
+      - run:
+          name: Tag and push Docker image
+          command: |
+            source $BASH_ENV
+            BUILD_SHA="<< pipeline.git.revision >>"
+
+            docker tag "$IMAGE_REPOSITORY:${BUILD_SHA}" "$IMAGE_REPOSITORY:latest"
+            docker tag "$IMAGE_REPOSITORY:${BUILD_SHA}" "$IMAGE_REPOSITORY:${BUILD_SHA}"
+            docker push "$IMAGE_REPOSITORY:latest"
+            docker push "$IMAGE_REPOSITORY:${BUILD_SHA}"
+  terraform_init:
+    description: Run Terraform Init
+    parameters:
+      environment:
+        type: string
+    steps:
+      - run:
+          name: Copy Credentials
+          command: |
+            mkdir "./deploy/terraform/tmp"
+            cp "./tmp/oidc_token" "./deploy/terraform/tmp/"
+      - run:
+          name: Terraform init
+          command: |
+            source $BASH_ENV
+            cd "./deploy/terraform"
+            terraform init -backend-config="environments/<< parameters.environment >>/backend.tf" -reconfigure
+  terraform_lint:
+    description: Run Terraform Lint
+    steps:
+      - run:
+          name: Terraform fmt
+          command: |
+            cd "./deploy/terraform"
+            terraform fmt --diff --check --recursive
+  terraform_validate:
+    description: Run Terraform Validate
+    steps:
+      - run:
+          name: Terraform validate
+          command: |
+            source $BASH_ENV
+            cd "./deploy/terraform"
+            terraform validate
+  terraform_plan:
+    description: Run Terraform Plan
+    parameters:
+      environment:
+        type: string
+    steps:
+      - run:
+          name: Terraform plan
+          command: |
+            source $BASH_ENV
+            cd "./deploy/terraform"
+            terraform plan \
+              -out=tfplan \
+              -input=false \
+              -var-file="./environments/<< parameters.environment >>/terraform.tfvars"
+  terraform_apply:
+    description: Run Terraform Apply
+    steps:
+      - run:
+          name: Terraform apply
+          command: |
+            source $BASH_ENV
+            cd "./deploy/terraform"
+            terraform apply -auto-approve=true -input=false tfplan
+
+jobs:
+  init_gcloud:
+    executor: node
+    parameters:
+      environment:
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: "Create oidc token folder"
+          command: |
+            mkdir -p ./tmp
+            echo $CIRCLE_OIDC_TOKEN > "./tmp/oidc_token"
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./tmp/oidc_token
+
+  terraform_deploy:
+    executor: terraform
+    working_directory: ~/project
+    parameters:
+      environment:
+        type: string
+      project:
+        type: string
+      service:
+        type: string
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Set environment variables
+          command: |
+            echo 'export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/tmp/google_service_account.json"' >> $BASH_ENV
+
+            IMAGE_REPOSITORY="europe-west2-docker.pkg.dev/<< parameters.project >>/<< parameters.service >>/<< parameters.service >>:<< pipeline.git.revision >>"
+
+            echo "export TF_VAR_image_repository=$IMAGE_REPOSITORY" >> $BASH_ENV
+
+            if [[ "<< parameters.environment >>" == "prod" ]]; then
+              SERVICE_ACCOUNT_EMAIL=$GOOGLE_APPLICATION_DEPLOY_EMAIL_PROD
+            else
+              SERVICE_ACCOUNT_EMAIL=$GOOGLE_APPLICATION_DEPLOY_EMAIL_STAGE
+            fi
+            echo "export TF_VAR_service_account=$SERVICE_ACCOUNT_EMAIL" >> $BASH_ENV
+
+      - terraform_init:
+          environment: << parameters.environment >>
+      - terraform_lint
+      - terraform_validate
+      - terraform_plan:
+          environment: << parameters.environment >>
+      - terraform_apply
+
+  build_service_image_and_push:
+    executor: node
+    working_directory: ~/project
+    parameters:
+      environment:
+        type: string
+      project:
+        type: string
+      service:
+        type: string
+    steps:
+      - checkout
+      - *default-remote-docker
+      - attach_workspace:
+          at: ~/project
+      - setup_google_account:
+          environment: << parameters.environment >>
+          project: << parameters.project >>
+      - run:
+          name: Install dependencies
+          command: cd "./" && yarn
+      - run:
+          name: Set project id
+          command: |
+            echo "export GOOGLE_PROJECT_ID=<< parameters.project >>" >> $BASH_ENV
+            source $BASH_ENV
+      - build_image:
+          project: << parameters.project >>
+          environment: << parameters.environment >>
+          service: << parameters.service >>
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./tmp/google_service_account.json
+
+  install_deps:
+    executor: node
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ checksum "yarn.lock" }}
+            - yarn-deps-
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Install dependencies
+          command: yarn
+      - save_cache:
+          key: yarn-deps-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - ~/.cache/yarn
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - node_modules/*
+
+  lint:
+    executor: node
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Lint
+          command: yarn lint
+
+  test:
+    executor: node
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Test
+          command: yarn test-ci
+
+workflows:
+  pull_request:
+    jobs:
+      - install_deps:
+          <<: *only_on_pr_branch
+      - iac-scan/scan:
+          <<: *only_on_pr_branch
+          name: iac-run-scan
+          run_terraform_scan: true
+          run_docker_scan: true
+          terraform_ignore_list: "CKV_GCP_113"
+          requires:
+            - install_deps
+
+#  deploy_to_staging:
+#    jobs:
+#      - init_gcloud:
+#          <<: *only_on_develop_branch
+#          name: init_gcloud_stage
+#          environment: staging
+#          context:
+#            - gcp-oidc-stage
+#      - build_service_image_and_push:
+#          <<: *only_on_develop_branch
+#          name: build_service_image_and_push_stage
+#          environment: staging
+#          project: news-data-products-dev
+#          service: <<ADD_SERVICE_NAME>>
+#          requires:
+#            - init_gcloud_stage
+#      - terraform_deploy:
+#          <<: *only_on_develop_branch
+#          name: terraform_deploy_stage
+#          environment: staging
+#          project: news-data-products-dev
+#          service: <<ADD_SERVICE_NAME>>
+#          requires:
+#            - build_service_image_and_push_stage
+#
+#  deploy_to_prod:
+#    jobs:
+#      - init_gcloud:
+#          <<: *only_on_master_branch
+#          name: init_gcloud_prod
+#          environment: prod
+#          context:
+#            - gcp-oidc-prod
+#      - build_service_image_and_push:
+#          <<: *only_on_master_branch
+#          name: build_service_image_and_push_prod
+#          environment: prod
+#          project: news-data-products-prod
+#          service: <<ADD_SERVICE_NAME>>
+#          requires:
+#            - init_gcloud_prod
+#      - terraform_deploy:
+#          <<: *only_on_master_branch
+#          name: terraform_deploy_prod
+#          environment: prod
+#          project: news-data-products-prod
+#          service: <<ADD_SERVICE_NAME>>
+#          requires:
+#            - build_service_image_and_push_prod
