@@ -100,7 +100,6 @@ const Index: React.FC = () => {
       <GenerateList />
       <GenerateSolution />
       <Crossword data={crosswordData} />
-
     </div>
   );
 }
