@@ -7,11 +7,6 @@ export const GenerateSolution = () => {
   console.log("from solution", randomList)
   const gridSize = 15
 
-  // useEffect(() => {
-  //   if (randomList.length === 22) {
-  //     generateCrossword();
-  //   }
-  // }, [randomList])
 
   const handleGenerateCrossword = () => {
     generateCrossword();
