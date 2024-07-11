@@ -1,40 +1,46 @@
 import React from 'react'
 import './styles.css'
-import list from './constants'
 import { useApp } from '../../context/AppContext'
+import axios from 'axios'
 
 export const GenerateList = () => {
-
   const { randomList, setRandomList } = useApp()
 
-  function shuffleList(array) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  const handleGenerateListAI = async (event) => {
+    const systemPrompt = {
+      role: 'system',
+      content: `You are a master at creating crosswords. Your job is to give a list of 32 words to create a cross word. Write the response as a comma-separated list with nothing else.`
     }
-    return shuffled.slice(0, 22);
-}
-
-const handleGenerateList = () => {
-  const newRandomList = shuffleList(list)
-  setRandomList(newRandomList)
-  console.log(newRandomList)
-}
+    const userMessage = {
+      role: 'user',
+      content: `The user has requested a list of 32 words to create a crossword.`
+    }
+    try {
+      const messages = [systemPrompt, userMessage]
+      const response = await axios.post('http://localhost:5000/list', { messages })
+      const aiResponse = response.data.aiResponse
+      const wordList = aiResponse.split(',').map(word => word.trim())
+      setRandomList(wordList)
+      
+      console.log("AI Response: ", wordList)
+    } catch (error) {
+      console.error("Error message: ", error)
+    }
+  }
 
   return (
     <div className='generate-list-container'>
-      <button className='generate-list-button' onClick={handleGenerateList}>Generate List</button>
+      <button className='generate-list-button' onClick={handleGenerateListAI}>Generate List</button>
       <div className='list-container'>
         <div className='list-column'>
-          {randomList.slice(0, 11).map((item, index) => (
+          {randomList.slice(0, 16).map((item, index) => (
             <div key={index} className='list-item'>
               {item}
             </div>
           ))}
         </div>
         <div className='list-column'>
-        {randomList.slice(11).map((item, index) => (
+        {randomList.slice(16).map((item, index) => (
           <div key={index} className='list-item'>
             {item}
           </div>
