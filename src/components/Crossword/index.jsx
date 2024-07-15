@@ -1,58 +1,53 @@
-import React from 'react';
-import './styles.css'; // You'll need to create this CSS file
+import React, { useState, useEffect } from 'react'
+import crosswordDataCorrect from '../GenerateSolution/constants'
+import './styles.css'
 
-export const Crossword = ({ data }) => {
-  const { dimensions, entries } = data;
+export const Crossword = () => {
+  const [grid, setGrid] = useState([])
+  const [numbers, setNumbers] = useState([])
+  const gridSize = 13
 
-  // Create an empty grid
-  const grid = Array(dimensions.rows).fill().map(() => Array(dimensions.cols).fill(null));
+  useEffect(() => {
+    // Initialize an empty grid
+    const emptyGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(''))
+    const numberGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(null))
 
-  // Fill the grid with entries
-  entries.forEach(entry => {
-    const { position, direction, length, solution } = entry;
-    for (let i = 0; i < length; i++) {
-      if (direction === 'across') {
-        grid[position.y][position.x + i] = {
-          letter: solution[i],
-          number: i === 0 ? entry.humanNumber : null
-        };
-      } else {
-        grid[position.y + i][position.x] = {
-          letter: solution[i],
-          number: i === 0 ? entry.humanNumber : null
-        };
+    // Place words on the grid
+    crosswordDataCorrect.entries.forEach(entry => {
+      const { word, direction, position, number } = entry
+      const { x, y } = position;
+
+      if (numberGrid[y][x] === null) {
+        numberGrid[y][x] = number
       }
-    }
-  });
+
+      for (let i = 0; i < word.length; i++) {
+        if (direction === 'across') {
+          emptyGrid[y][x + i] = word[i]
+        } else if (direction === 'down') {
+          emptyGrid[y + i][x] = word[i]
+        }
+      }
+    });
+
+    setGrid(emptyGrid);
+    setNumbers(numberGrid);
+  }, []);
 
   return (
-    <div className="crossword">
-      <div className="grid">
-        {grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <div key={`${rowIndex}-${colIndex}`} className={`cell ${cell ? 'filled' : 'empty'}`}>
-                {cell && cell.number && <span className="number">{cell.number}</span>}
-                {cell && <span className="letter">{cell.letter}</span>}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-      <div className="clues">
-        <div className="across">
-          <h3>Across</h3>
-          {entries.filter(entry => entry.direction === 'across').map(entry => (
-            <p key={entry.id}>{entry.humanNumber}. {entry.clue}</p>
+    <div className="crossword-grid">
+      {grid.map((row, rowIndex) => (
+        <div key={rowIndex} className="grid-row">
+          {row.map((cell, cellIndex) => (
+            <div key={`${rowIndex}-${cellIndex}`} className="grid-cell">
+              {numbers[rowIndex][cellIndex] && (
+                <span className='cell-number'>{numbers[rowIndex][cellIndex]}</span>
+              )}
+              {cell}
+            </div>
           ))}
         </div>
-        <div className="down">
-          <h3>Down</h3>
-          {entries.filter(entry => entry.direction === 'down').map(entry => (
-            <p key={entry.id}>{entry.humanNumber}. {entry.clue}</p>
-          ))}
-        </div>
-      </div>
+      ))}
     </div>
   );
 };

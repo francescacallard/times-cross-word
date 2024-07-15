@@ -1,45 +1,27 @@
-.crossword {
-  display: flex;
-  font-family: Arial, sans-serif;
-}
-
-.grid {
+.crossword-grid {
+  display: inline-block;
   border: 2px solid black;
 }
 
-.row {
+.grid-row {
   display: flex;
 }
 
-.cell {
+.grid-cell {
   width: 30px;
   height: 30px;
-  border: 1px solid black;
+  border: 1px solid #ccc;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
   position: relative;
 }
 
-.cell.empty {
-  background-color: black;
-}
-
-.number {
+.cell-number {
   position: absolute;
   top: 2px;
   left: 2px;
   font-size: 10px;
-}
-
-.letter {
-  font-size: 18px;
-}
-
-.clues {
-  margin-left: 20px;
-}
-
-.across, .down {
-  margin-bottom: 20px;
+  font-weight: normal;
 }
