@@ -41,7 +41,7 @@ const crosswordDataCorrect = {
     "direction": "down",
     "position": {"x": 0, "y": 0},
     "length": 5,
-    "number": 2
+    "number": 1
     },
     {
     "word": "EXISTENCE",
@@ -49,7 +49,7 @@ const crosswordDataCorrect = {
     "direction": "down",
     "position": {"x": 2, "y": 0},
     "length": 9,
-    "number": 3
+    "number": 2
     },
     {
     "word": "UNINTERRUPTED",
@@ -57,7 +57,7 @@ const crosswordDataCorrect = {
     "direction": "across",
     "position": {"x": 0, "y": 2},
     "length": 13,
-    "number": 4
+    "number": 3
     },
     {
     "word": "TOTE",
@@ -65,7 +65,7 @@ const crosswordDataCorrect = {
     "direction": "across",
     "position": {"x": 0, "y": 4},
     "length": 4,
-    "number": 5
+    "number": 4
     },
     {
     "word": "VERTEBRA",
@@ -73,7 +73,7 @@ const crosswordDataCorrect = {
     "direction": "across",
     "position": {"x": 5, "y": 4},
     "length": 8,
-    "number": 6
+    "number": 5
     },
     {
     "word": "COVER",
@@ -81,7 +81,7 @@ const crosswordDataCorrect = {
     "direction": "across",
     "position": {"x": 8, "y": 0},
     "length": 5,
-    "number": 7
+    "number": 6
     },
     {
     "word": "COURTESY",
@@ -89,7 +89,7 @@ const crosswordDataCorrect = {
     "direction": "down",
     "position": {"x": 8, "y": 0},
     "length": 8,
-    "number": 8
+    "number": 6
     },
     {
     "word": "VAT",
@@ -97,7 +97,7 @@ const crosswordDataCorrect = {
     "direction": "down",
     "position": {"x": 10, "y": 0},
     "length": 3,
-    "number": 9
+    "number": 7
     },
     {
     "word": "RADIANT",
@@ -105,7 +105,7 @@ const crosswordDataCorrect = {
     "direction": "down",
     "position": {"x": 12, "y": 0},
     "length": 7,
-    "number": 10
+    "number": 8
     }
     ]
     }

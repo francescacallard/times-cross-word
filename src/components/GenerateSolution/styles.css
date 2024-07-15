@@ -23,7 +23,6 @@
 }
 
 .solution-container {
-  border: solid 1pxblack;
   display: flex;
   justify-content: space-between;
   margin: 20px

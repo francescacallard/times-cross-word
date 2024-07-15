@@ -1,13 +1,13 @@
-.crossword-grid {
+.crossword-grid-solution {
   display: inline-block;
   border: 2px solid black;
 }
 
-.grid-row {
+.grid-row-solution {
   display: flex;
 }
 
-.grid-cell {
+.grid-cell-solution {
   width: 30px;
   height: 30px;
   border: 1px solid #ccc;
@@ -18,10 +18,10 @@
   position: relative;
 }
 
-.cell-number {
+.cell-number-solution {
   position: absolute;
-  top: 2px;
-  left: 2px;
+  top: 1px;
+  left: 1px;
   font-size: 10px;
   font-weight: normal;
 }

@@ -35,13 +35,13 @@ export const Crossword = () => {
   }, []);
 
   return (
-    <div className="crossword-grid">
+    <div className="crossword-grid-solution">
       {grid.map((row, rowIndex) => (
-        <div key={rowIndex} className="grid-row">
+        <div key={rowIndex} className="grid-row-solution">
           {row.map((cell, cellIndex) => (
-            <div key={`${rowIndex}-${cellIndex}`} className="grid-cell">
+            <div key={`${rowIndex}-${cellIndex}`} className="grid-cell-solution">
               {numbers[rowIndex][cellIndex] && (
-                <span className='cell-number'>{numbers[rowIndex][cellIndex]}</span>
+                <span className='cell-number-solution'>{numbers[rowIndex][cellIndex]}</span>
               )}
               {cell}
             </div>

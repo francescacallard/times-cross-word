@@ -3,20 +3,29 @@ import './styles.css';
 import { useApp } from '../../context/AppContext';
 import crosswordDataCorrect from './constants';
 import { Crossword } from '../Crossword';
+import { GenerateCrossword } from 'components/GenerateCrossword';
 
 export const GenerateSolution = () => {
-  const { setRandomList, setCrosswordData, setError, clues, setClues, showCrossword, setShowCrossword } = useApp();
+  const { 
+    setRandomList, 
+    setCrosswordData, 
+    setError, 
+    clues, 
+    setClues, 
+    showCrossword, 
+    setShowCrossword 
+  } = useApp();
+
+  const [solutionLoaded, setSolutionLoaded] = useState(false);
 
   const generateCrossword = () => {
     // Process the crossword data
     const acrossClues = [];
     const downClues = [];
-    let acrossNumber = 1;
-    let downNumber = 1;
 
     crosswordDataCorrect.entries.forEach((entry) => {
       const clueObject = {
-        number: entry.direction === 'across' ? acrossNumber++ : downNumber++,
+        number: entry.number, 
         clue: entry.clue,
         length: entry.length,
       };
@@ -28,16 +37,20 @@ export const GenerateSolution = () => {
       }
     });
 
+    acrossClues.sort((a, b) => a.number - b.number);
+    downClues.sort((a, b) => a.number - b.number);
+
     setClues({ across: acrossClues, down: downClues });
     setCrosswordData(crosswordDataCorrect);
     setRandomList(crosswordDataCorrect.entries);
     setShowCrossword(true);
+    setSolutionLoaded(true);
   };
 
   return (
     <div className='generate-solution-container'>
       <button className='generate-solution-button' onClick={generateCrossword}>
-        Generate Crossword
+        Generate Solution
       </button>
       
       {showCrossword && (
@@ -66,6 +79,8 @@ export const GenerateSolution = () => {
           </div>
         </>
       )}
+
+      {solutionLoaded && <GenerateCrossword />}
     </div>
   );
 };
