@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import crosswordDataCorrect from '../GenerateSolution/constants'; // Adjust the import path as needed
-import './styles.css'; // Make sure to create this CSS file
+import crosswordDataCorrect from '../GenerateSolution/constants';
+import './styles.css';
+import { useApp } from '../../context/AppContext';
+import { GenerateSolution } from 'components/GenerateSolution';
 
 export const GenerateCrossword = () => {
-  const [crosswordGrid, setCrosswordGrid] = useState([]);
-  const [clues, setClues] = useState({ across: [], down: [] });
-  const [showCrossword, setShowCrossword] = useState(false);
+  const { crosswordGrid, setCrosswordGrid, clues, setClues, showCrossword, setShowCrossword } = useApp(); 
 
   const handleGenerateCrossword = () => {
-    const gridSize = 13; // Adjust based on your crossword size
+    const gridSize = 13;
     const newGrid = Array(gridSize).fill().map(() => Array(gridSize).fill({ letter: '', number: null }));
     const acrossClues = [];
     const downClues = [];

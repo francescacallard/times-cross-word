@@ -8,12 +8,11 @@ import { GenerateCrossword } from 'components/GenerateCrossword';
 export const GenerateSolution = () => {
   const { 
     setRandomList, 
-    setCrosswordData, 
-    setError, 
-    clues, 
-    setClues, 
-    showCrossword, 
-    setShowCrossword 
+    setCrosswordData,
+    cluesSolution, 
+    setCluesSolution, 
+    showCrosswordSolution, 
+    setShowCrosswordSolution 
   } = useApp();
 
   const [solutionLoaded, setSolutionLoaded] = useState(false);
@@ -40,12 +39,22 @@ export const GenerateSolution = () => {
     acrossClues.sort((a, b) => a.number - b.number);
     downClues.sort((a, b) => a.number - b.number);
 
-    setClues({ across: acrossClues, down: downClues });
+    setCluesSolution({ across: acrossClues, down: downClues });
     setCrosswordData(crosswordDataCorrect);
     setRandomList(crosswordDataCorrect.entries);
-    setShowCrossword(true);
+    setShowCrosswordSolution(true);
     setSolutionLoaded(true);
   };
+
+  useEffect(() => {
+    setShowCrosswordSolution(false);
+    setSolutionLoaded(false);
+  
+    return () => {
+      setShowCrosswordSolution(false);
+      setSolutionLoaded(false);
+    };
+  }, []);
 
   return (
     <div className='generate-solution-container'>
@@ -53,16 +62,16 @@ export const GenerateSolution = () => {
         Generate Solution
       </button>
       
-      {showCrossword && (
+      {showCrosswordSolution && (
         <>
-          <div className={`crossword-container ${showCrossword ? 'show' : ''}`}>
+          <div className={`crossword-container ${showCrosswordSolution ? 'show' : ''}`}>
             <Crossword />
           </div>
           
-          <div className={`solution-container ${showCrossword ? 'show' : ''}`}>
+          <div className={`solution-container ${showCrosswordSolution ? 'show' : ''}`}>
             <div className='solution-column'>
               <h3>Across</h3>
-              {clues.across.map((item) => (
+              {cluesSolution.across.map((item) => (
                 <div key={`across-${item.number}`} className='solution-item'>
                   {item.number}. {item.clue} ({item.length})
                 </div>
@@ -70,7 +79,7 @@ export const GenerateSolution = () => {
             </div>
             <div className='solution-column'>
               <h3>Down</h3>
-              {clues.down.map((item) => (
+              {cluesSolution.down.map((item) => (
                 <div key={`down-${item.number}`} className='solution-item'>
                   {item.number}. {item.clue} ({item.length})
                 </div>

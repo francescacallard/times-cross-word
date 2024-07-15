@@ -14,9 +14,13 @@ export const AppProvider = ({ children }) => {
   const [showList, setShowList] = useState(false);
   const [clues, setClues] = useState({ across: [], down: [] });
   const [showCrossword, setShowCrossword] = useState(false);
+  const [crosswordGrid, setCrosswordGrid] = useState([]);
+  const [showCrosswordSolution, setShowCrosswordSolution] = useState(false);
+  const [cluesSolution, setCluesSolution] = useState({ across: [], down: [] });
+ 
 
   return (
-    <AppContext.Provider value={{ list, setList, randomList, setRandomList, grid, setGrid, crosswordData, setCrosswordData, error, setError, numbers, setNumbers, words, setWords, showList, setShowList, clues, setClues, showCrossword, setShowCrossword }}>
+    <AppContext.Provider value={{ list, setList, randomList, setRandomList, grid, setGrid, crosswordData, setCrosswordData, error, setError, numbers, setNumbers, words, setWords, showList, setShowList, clues, setClues, showCrossword, setShowCrossword, crosswordGrid, setCrosswordGrid, showCrosswordSolution, setShowCrosswordSolution, cluesSolution, setCluesSolution }}>
       {children}
     </AppContext.Provider>
   )
