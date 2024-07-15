@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import './styles.css'
+import { useApp } from 'context/AppContext'
 import crosswordDataCorrect from 'components/GenerateSolution/constants'
 
 export const GenerateList = () => {
-  const [words, setWords] = useState([]);
-  const [showList, setShowList] = useState(false);
+ const { words, setWords, showList, setShowList } = useApp();
 
   const generateList = () => {
     // Extract words from crosswordDataCorrect

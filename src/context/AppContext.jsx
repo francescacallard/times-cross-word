@@ -9,9 +9,14 @@ export const AppProvider = ({ children }) => {
   const [crosswordData, setCrosswordData] = useState(null);
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [numbers, setNumbers] = useState([])
+  const [words, setWords] = useState([]);
+  const [showList, setShowList] = useState(false);
+  const [clues, setClues] = useState({ across: [], down: [] });
+  const [showCrossword, setShowCrossword] = useState(false);
 
   return (
-    <AppContext.Provider value={{ list, setList, randomList, setRandomList, grid, setGrid, crosswordData, setCrosswordData, error, setError }}>
+    <AppContext.Provider value={{ list, setList, randomList, setRandomList, grid, setGrid, crosswordData, setCrosswordData, error, setError, numbers, setNumbers, words, setWords, showList, setShowList, clues, setClues, showCrossword, setShowCrossword }}>
       {children}
     </AppContext.Provider>
   )

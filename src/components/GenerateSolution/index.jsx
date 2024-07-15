@@ -5,9 +5,7 @@ import crosswordDataCorrect from './constants';
 import { Crossword } from '../Crossword';
 
 export const GenerateSolution = () => {
-  const { setRandomList, setCrosswordData, setError } = useApp();
-  const [clues, setClues] = useState({ across: [], down: [] });
-  const [showCrossword, setShowCrossword] = useState(false);
+  const { setRandomList, setCrosswordData, setError, clues, setClues, showCrossword, setShowCrossword } = useApp();
 
   const generateCrossword = () => {
     // Process the crossword data

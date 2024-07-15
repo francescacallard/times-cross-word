@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import crosswordDataCorrect from '../GenerateSolution/constants'
+import { useApp } from '../../context/AppContext'
 import './styles.css'
 
 export const Crossword = () => {
-  const [grid, setGrid] = useState([])
-  const [numbers, setNumbers] = useState([])
+  const { grid, setGrid, numbers, setNumbers } = useApp();
   const gridSize = 13
 
   useEffect(() => {
