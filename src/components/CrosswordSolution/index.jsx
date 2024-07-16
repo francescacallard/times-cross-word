@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import crosswordDataCorrect from '../GenerateSolution/constants'
 import { useApp } from '../../context/AppContext'
 import './styles.css'
 
-export const Crossword = () => {
-  const { grid, setGrid, numbers, setNumbers } = useApp();
+export const CrosswordSolution = () => {
+  const { grid, setGrid, numbers, setNumbers } = useApp()
   const gridSize = 13
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export const Crossword = () => {
     // Place words on the grid
     crosswordDataCorrect.entries.forEach(entry => {
       const { word, direction, position, number } = entry
-      const { x, y } = position;
+      const { x, y } = position
 
       if (numberGrid[y][x] === null) {
         numberGrid[y][x] = number
@@ -28,11 +28,11 @@ export const Crossword = () => {
           emptyGrid[y + i][x] = word[i]
         }
       }
-    });
+    })
 
-    setGrid(emptyGrid);
-    setNumbers(numberGrid);
-  }, []);
+    setGrid(emptyGrid)
+    setNumbers(numberGrid)
+  }, [])
 
   return (
     <div className="crossword-grid-solution">
@@ -49,6 +49,6 @@ export const Crossword = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 

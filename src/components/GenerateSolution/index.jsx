@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './styles.css';
 import { useApp } from '../../context/AppContext';
 import crosswordDataCorrect from './constants';
-import { Crossword } from '../Crossword';
+import { CrosswordSolution } from '../CrosswordSolution';
 import { GenerateCrossword } from 'components/GenerateCrossword';
 
 export const GenerateSolution = () => {
@@ -12,10 +12,10 @@ export const GenerateSolution = () => {
     cluesSolution, 
     setCluesSolution, 
     showCrosswordSolution, 
-    setShowCrosswordSolution 
+    setShowCrosswordSolution,
+    solutionLoaded,
+    setSolutionLoaded
   } = useApp();
-
-  const [solutionLoaded, setSolutionLoaded] = useState(false);
 
   const generateCrossword = () => {
     // Process the crossword data
@@ -65,7 +65,7 @@ export const GenerateSolution = () => {
       {showCrosswordSolution && (
         <>
           <div className={`crossword-container ${showCrosswordSolution ? 'show' : ''}`}>
-            <Crossword />
+            <CrosswordSolution />
           </div>
           
           <div className={`solution-container ${showCrosswordSolution ? 'show' : ''}`}>
