@@ -94,5 +94,9 @@
 
 .completed-word {
   text-decoration: line-through;
-  color: red;
+  color: #ffc7c1;
+}
+
+.inactive-cell {
+  background-color: black;
 }

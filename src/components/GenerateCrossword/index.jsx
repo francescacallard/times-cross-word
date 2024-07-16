@@ -8,10 +8,11 @@ export const GenerateCrossword = () => {
 
   const [correctLetters, setCorrectLetters] = useState(new Set())
   const [correctWords, setCorrectWords] = useState(new Set())
+  const [checkMode, setCheckMode] = useState(false)
 
   const handleGenerateCrossword = () => {
     const gridSize = 13;
-    const newGrid = Array(gridSize).fill().map(() => Array(gridSize).fill({ letter: '', number: null }));
+    const newGrid = Array(gridSize).fill().map(() => Array(gridSize).fill({ letter: '', number: null, isActive: false }));
     const acrossClues = [];
     const downClues = [];
 
@@ -22,12 +23,12 @@ export const GenerateCrossword = () => {
       if (direction === 'across') {
         acrossClues.push({ number, clue });
         for (let i = 0; i < word.length; i++) {
-          newGrid[y][x + i] = { letter: '', number: i === 0 ? number : null };
+          newGrid[y][x + i] = { letter: '', number: i === 0 ? number : null, isActive: true };
         }
       } else if (direction === 'down') {
         downClues.push({ number, clue });
         for (let i = 0; i < word.length; i++) {
-          newGrid[y + i][x] = { letter: '', number: i === 0 ? number : null };
+          newGrid[y + i][x] = { letter: '', number: i === 0 ? number : null, isActive: true };
         }
       }
     });
@@ -42,8 +43,10 @@ export const GenerateCrossword = () => {
 
   const handleCellChange = (rowIndex, colIndex, value) => {
     const newGrid = [...crosswordGrid];
+    if (newGrid[rowIndex][colIndex].isActive) {
     newGrid[rowIndex][colIndex] = { ...newGrid[rowIndex][colIndex], letter: value.toUpperCase() };
     setCrosswordGrid(newGrid);
+    
 
     const correctWord = crosswordDataCorrect.entries.find(entry => {
       const { word, direction, position } = entry
@@ -62,10 +65,11 @@ export const GenerateCrossword = () => {
     } else {
       setCorrectLetters(prev => {
         const newSet = new Set(prev)
-        newSet.delete(`{rowIndex}={colIndex}`)
+        newSet.delete(`${rowIndex}-${colIndex}`)
         return newSet
       })
     }
+  }
   };
 
   const checkWord = (entry) => {
@@ -102,20 +106,24 @@ export const GenerateCrossword = () => {
             {crosswordGrid.map((row, rowIndex) => (
               <div key={rowIndex} className='grid-row'>
                 {row.map((cell, colIndex) => (
-                  <div 
+                <div 
                   key={`${rowIndex}-${colIndex}`} 
-                  className={`grid-cell ${correctLetters.has(`${rowIndex}-${colIndex}`) ? 'correct-letter' : ''}`}
+                  className={`grid-cell ${!cell.isActive ? 'inactive-cell' : ''} ${(checkMode && correctLetters.has(`${rowIndex}-${colIndex}`)) ? 'correct-letter' : ''}`}
                 >
-                    {cell.number && <span className='cell-number'>{cell.number}</span>}
-                    <input
-                      type='text'
-                      maxLength='1'
-                      value={cell.letter}
-                      onChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value)}
-                      className='cell-input'
-                    />
-                  </div>
-                ))}
+                  {cell.isActive ? (
+                    <>
+                      {cell.number && <span className='cell-number'>{cell.number}</span>}
+                      <input
+                        type='text'
+                        maxLength='1'
+                        value={cell.letter}
+                        onChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value)}
+                        className={`cell-input ${(checkMode && correctLetters.has(`${rowIndex}-${colIndex}`)) ? 'correct-letter' : ''}`}
+                      />
+                    </>
+                  ) : null}
+                </div>
+              ))}
               </div>
             ))}
           </div>
@@ -142,7 +150,9 @@ export const GenerateCrossword = () => {
               </div>
               ))}
             </div>
+            
           </div>
+          <button className='check-letter-button' onClick={() => setCheckMode(!checkMode)}>{checkMode ? 'Hide Correct Letters' : 'Check Letters'}</button>
         </div>
       )}
     </div>
