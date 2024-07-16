@@ -4,11 +4,7 @@ import './styles.css';
 import { useApp } from '../../context/AppContext';
 
 export const GenerateCrossword = () => {
-  const { crosswordGrid, setCrosswordGrid, clues, setClues, showCrossword, setShowCrossword } = useApp(); 
-
-  const [correctLetters, setCorrectLetters] = useState(new Set())
-  const [correctWords, setCorrectWords] = useState(new Set())
-  const [checkMode, setCheckMode] = useState(false)
+  const { crosswordGrid, setCrosswordGrid, clues, setClues, showCrossword, setShowCrossword, correctLetters, setCorrectLetters, correctWords, setCorrectWords, checkMode, setCheckMode } = useApp(); 
 
   const handleGenerateCrossword = () => {
     const gridSize = 13;
