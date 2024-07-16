@@ -87,3 +87,12 @@
   outline: none;
   font-weight: normal;
 }
+
+.correct-letter {
+  background-color: #00c400;
+}
+
+.completed-word {
+  text-decoration: line-through;
+  color: red;
+}

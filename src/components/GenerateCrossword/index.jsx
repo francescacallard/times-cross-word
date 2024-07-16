@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import crosswordDataCorrect from '../GenerateSolution/constants';
 import './styles.css';
 import { useApp } from '../../context/AppContext';
-import { GenerateSolution } from 'components/GenerateSolution';
 
 export const GenerateCrossword = () => {
   const { crosswordGrid, setCrosswordGrid, clues, setClues, showCrossword, setShowCrossword } = useApp(); 
+
+  const [correctLetters, setCorrectLetters] = useState(new Set())
+  const [correctWords, setCorrectWords] = useState(new Set())
 
   const handleGenerateCrossword = () => {
     const gridSize = 13;
@@ -42,8 +44,53 @@ export const GenerateCrossword = () => {
     const newGrid = [...crosswordGrid];
     newGrid[rowIndex][colIndex] = { ...newGrid[rowIndex][colIndex], letter: value.toUpperCase() };
     setCrosswordGrid(newGrid);
+
+    const correctWord = crosswordDataCorrect.entries.find(entry => {
+      const { word, direction, position } = entry
+      const { x, y } = position
+      if (direction === 'across' && y === rowIndex && x <= colIndex && x + word.length > colIndex) {
+        return word[colIndex - x] === value.toUpperCase()
+      } if ( direction === 'down' && x === colIndex && y <= rowIndex && y + word.length > rowIndex) {
+        return word[rowIndex - y] === value.toUpperCase()
+      } 
+      return false
+    })
+
+    if (correctWord) {
+      setCorrectLetters(prev => new Set(prev).add(`${rowIndex}-${colIndex}`))
+      checkWord(correctWord)
+    } else {
+      setCorrectLetters(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(`{rowIndex}={colIndex}`)
+        return newSet
+      })
+    }
   };
 
+  const checkWord = (entry) => {
+    const {word, direction, position} = entry
+    const { x, y } = position
+    const isCorrect = word.split('').every((letter, index) => {
+      if (direction === 'across') {
+        return crosswordGrid[y][x + index].letter === letter
+      } else {
+        return crosswordGrid[y + index][x].letter === letter
+      }
+    })
+
+    if (isCorrect) {
+      setCorrectWords(prev => new Set(prev).add(word))
+    } else {
+      setCorrectWords(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(word)
+        return newSet
+      })
+    }
+  }
+
+  
   return (
     <div className='generate-crossword-container'>
       <button className='generate-crossword-button' onClick={handleGenerateCrossword}>
@@ -55,7 +102,10 @@ export const GenerateCrossword = () => {
             {crosswordGrid.map((row, rowIndex) => (
               <div key={rowIndex} className='grid-row'>
                 {row.map((cell, colIndex) => (
-                  <div key={`${rowIndex}-${colIndex}`} className='grid-cell'>
+                  <div 
+                  key={`${rowIndex}-${colIndex}`} 
+                  className={`grid-cell ${correctLetters.has(`${rowIndex}-${colIndex}`) ? 'correct-letter' : ''}`}
+                >
                     {cell.number && <span className='cell-number'>{cell.number}</span>}
                     <input
                       type='text'
@@ -73,17 +123,23 @@ export const GenerateCrossword = () => {
             <div className='clues-column'>
               <h3>Across</h3>
               {clues.across.map(clue => (
-                <div key={`across-${clue.number}`} className='clue'>
-                  {clue.number}. {clue.clue}
-                </div>
+                <div 
+                key={`across-${clue.number}`} 
+                className={`clue ${correctWords.has(crosswordDataCorrect.entries.find(e => e.number === clue.number && e.direction === 'across').word) ? 'completed-word' : ''}`}
+              >
+                {clue.number}. {clue.clue}
+              </div>
               ))}
             </div>
             <div className='clues-column'>
               <h3>Down</h3>
               {clues.down.map(clue => (
-                <div key={`down-${clue.number}`} className='clue'>
-                  {clue.number}. {clue.clue}
-                </div>
+                <div 
+                key={`down-${clue.number}`} 
+                className={`clue ${correctWords.has(crosswordDataCorrect.entries.find(e => e.number === clue.number && e.direction === 'down').word) ? 'completed-word' : ''}`}
+              >
+                {clue.number}. {clue.clue}
+              </div>
               ))}
             </div>
           </div>
