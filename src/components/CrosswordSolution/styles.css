@@ -1,0 +1,27 @@
+.crossword-grid-solution {
+  display: inline-block;
+  border: 2px solid black;
+}
+
+.grid-row-solution {
+  display: flex;
+}
+
+.grid-cell-solution {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  position: relative;
+}
+
+.cell-number-solution {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  font-size: 10px;
+  font-weight: normal;
+}

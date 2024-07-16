@@ -1,52 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './styles.css'
-import { useApp } from '../../context/AppContext'
-import axios from 'axios'
+import { useApp } from 'context/AppContext'
+import crosswordDataCorrect from 'components/GenerateSolution/constants'
+import { GenerateSolution } from 'components/GenerateSolution'
 
 export const GenerateList = () => {
-  const { randomList, setRandomList } = useApp()
+ const { words, setWords, showList, setShowList } = useApp();
+ const [listLoaded, setListLoaded] = useState(false);
 
-  const handleGenerateListAI = async (event) => {
-    const systemPrompt = {
-      role: 'system',
-      content: `You are a master at creating crosswords. Your job is to give a list of 32 words to create a cross word. Write the response as a comma-separated list with nothing else.`
-    }
-    const userMessage = {
-      role: 'user',
-      content: `The user has requested a list of 32 words to create a crossword.`
-    }
-    try {
-      const messages = [systemPrompt, userMessage]
-      const response = await axios.post('http://localhost:5000/list', { messages })
-      const aiResponse = response.data.aiResponse
-      const wordList = aiResponse.split(',').map(word => word.trim())
-      setRandomList(wordList)
-      
-      console.log("AI Response: ", wordList)
-    } catch (error) {
-      console.error("Error message: ", error)
-    }
+  const generateList = () => {
+    // Extract words from crosswordDataCorrect
+    const extractedWords = crosswordDataCorrect.entries.map(entry => ({
+      word: entry.word,
+      clue: entry.clue,
+      direction: entry.direction
+    }));
+    
+    setWords(extractedWords);
+    setShowList(true);
+    setListLoaded(true);
   }
 
   return (
     <div className='generate-list-container'>
-      <button className='generate-list-button' onClick={handleGenerateListAI}>Generate List</button>
-      <div className='list-container'>
-        <div className='list-column'>
-          {randomList.slice(0, 16).map((item, index) => (
-            <div key={index} className='list-item'>
-              {item}
-            </div>
-          ))}
-        </div>
-        <div className='list-column'>
-        {randomList.slice(16).map((item, index) => (
-          <div key={index} className='list-item'>
-            {item}
+      <button className='generate-list-button' onClick={generateList}>
+        Generate List
+      </button>
+      
+      {showList && (
+        <div className='word-list'>
+          <div className='list-column'>
+            <h3>Across</h3>
+            {words.filter(word => word.direction === 'across').map((word, index) => (
+              <div key={`across-${index}`} className='word-item'>
+                {word.word}: {word.clue}
+              </div>
+            ))}
           </div>
-        ))}
+          <div className='list-column'>
+            <h3>Down</h3>
+            {words.filter(word => word.direction === 'down').map((word, index) => (
+              <div key={`down-${index}`} className='word-item'>
+                {word.word}: {word.clue}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+      {listLoaded && <GenerateSolution />}
     </div>
   )
 }
