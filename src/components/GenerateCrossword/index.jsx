@@ -98,57 +98,63 @@ export const GenerateCrossword = () => {
       </button>
       {showCrossword && (
         <div className='crossword-puzzle'>
-          <div className='crossword-grid'>
-            {crosswordGrid.map((row, rowIndex) => (
-              <div key={rowIndex} className='grid-row'>
-                {row.map((cell, colIndex) => (
-                <div 
-                  key={`${rowIndex}-${colIndex}`} 
-                  className={`grid-cell ${!cell.isActive ? 'inactive-cell' : ''} ${(checkMode && correctLetters.has(`${rowIndex}-${colIndex}`)) ? 'correct-letter' : ''}`}
-                >
-                  {cell.isActive ? (
-                    <>
-                      {cell.number && <span className='cell-number'>{cell.number}</span>}
-                      <input
-                        type='text'
-                        maxLength='1'
-                        value={cell.letter}
-                        onChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value)}
-                        className={`cell-input ${(checkMode && correctLetters.has(`${rowIndex}-${colIndex}`)) ? 'correct-letter' : ''}`}
-                      />
-                    </>
-                  ) : null}
+          <div className='crossword-content'>
+            <div className='crossword-grid'>
+              {crosswordGrid.map((row, rowIndex) => (
+                <div key={rowIndex} className='grid-row'>
+                  {row.map((cell, colIndex) => (
+                    <div 
+                      key={`${rowIndex}-${colIndex}`} 
+                      className={`grid-cell ${!cell.isActive ? 'inactive-cell' : ''} ${(checkMode && correctLetters.has(`${rowIndex}-${colIndex}`)) ? 'correct-letter' : ''}`}
+                    >
+                      {cell.isActive ? (
+                        <>
+                          {cell.number && <span className='cell-number'>{cell.number}</span>}
+                          <input
+                            type='text'
+                            maxLength='1'
+                            value={cell.letter}
+                            onChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value)}
+                            className={`cell-input ${(checkMode && correctLetters.has(`${rowIndex}-${colIndex}`)) ? 'correct-letter' : ''}`}
+                          />
+                        </>
+                      ) : null}
+                    </div>
+                  ))}
                 </div>
               ))}
-              </div>
-            ))}
+            </div>
+            <div className='crossword-buttons'>
+              <button className='check-letter-button' onClick={() => setCheckMode(!checkMode)}>
+                {checkMode ? 'Hide Correct Letters' : 'Check Letters'}
+              </button>
+              {/* Add more buttons here if needed */}
+            </div>
           </div>
           <div className='clues-container'>
             <div className='clues-column'>
               <h3>Across</h3>
               {clues.across.map(clue => (
                 <div 
-                key={`across-${clue.number}`} 
-                className={`clue ${correctWords.has(crosswordDataCorrect.entries.find(e => e.number === clue.number && e.direction === 'across').word) ? 'completed-word' : ''}`}
-              >
-                {clue.number}. {clue.clue}
-              </div>
+                  key={`across-${clue.number}`} 
+                  className={`clue ${correctWords.has(crosswordDataCorrect.entries.find(e => e.number === clue.number && e.direction === 'across').word) ? 'completed-word' : ''}`}
+                >
+                  {clue.number}. {clue.clue}
+                </div>
               ))}
             </div>
             <div className='clues-column'>
               <h3>Down</h3>
               {clues.down.map(clue => (
                 <div 
-                key={`down-${clue.number}`} 
-                className={`clue ${correctWords.has(crosswordDataCorrect.entries.find(e => e.number === clue.number && e.direction === 'down').word) ? 'completed-word' : ''}`}
-              >
-                {clue.number}. {clue.clue}
-              </div>
+                  key={`down-${clue.number}`} 
+                  className={`clue ${correctWords.has(crosswordDataCorrect.entries.find(e => e.number === clue.number && e.direction === 'down').word) ? 'completed-word' : ''}`}
+                >
+                  {clue.number}. {clue.clue}
+                </div>
               ))}
             </div>
-            
           </div>
-          <button className='check-letter-button' onClick={() => setCheckMode(!checkMode)}>{checkMode ? 'Hide Correct Letters' : 'Check Letters'}</button>
         </div>
       )}
     </div>
