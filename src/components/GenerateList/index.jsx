@@ -22,6 +22,7 @@ export const GenerateList = () => {
   }
 
   return (
+    <>
     <div className='generate-list-container'>
       <button className='generate-list-button' onClick={generateList}>
         Generate List
@@ -47,7 +48,8 @@ export const GenerateList = () => {
           </div>
         </div>
       )}
-      {listLoaded && <GenerateSolution />}
     </div>
+    {listLoaded && <GenerateSolution />}
+    </>
   )
 }

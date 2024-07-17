@@ -58,38 +58,46 @@ export const GenerateSolution = () => {
 
   return (
     <div className='generate-solution-container'>
-      <button className='generate-solution-button' onClick={generateCrossword}>
-        Generate Solution
-      </button>
+  {!showCrosswordSolution && (
+    <button className='generate-solution-button' onClick={generateCrossword}>
+      Generate Solution
+    </button>
+  )}
+  
+  {showCrosswordSolution && (
+    <>
+      <div className='content-wrapper'>
+        <div className={`crossword-container ${showCrosswordSolution ? 'show' : ''}`}>
+          <CrosswordSolution />
+        </div>
+        
+        <div className={`solution-container ${showCrosswordSolution ? 'show' : ''}`}>
+          <div className='solution-column'>
+            <h3>Across</h3>
+            {cluesSolution.across.map((item) => (
+              <div key={`across-${item.number}`} className='solution-item'>
+                {item.number}. {item.clue} ({item.length})
+              </div>
+            ))}
+          </div>
+          <div className='solution-column'>
+            <h3>Down</h3>
+            {cluesSolution.down.map((item) => (
+              <div key={`down-${item.number}`} className='solution-item'>
+                {item.number}. {item.clue} ({item.length})
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       
-      {showCrosswordSolution && (
-        <>
-          <div className={`crossword-container ${showCrosswordSolution ? 'show' : ''}`}>
-            <CrosswordSolution />
-          </div>
-          
-          <div className={`solution-container ${showCrosswordSolution ? 'show' : ''}`}>
-            <div className='solution-column'>
-              <h3>Across</h3>
-              {cluesSolution.across.map((item) => (
-                <div key={`across-${item.number}`} className='solution-item'>
-                  {item.number}. {item.clue} ({item.length})
-                </div>
-              ))}
-            </div>
-            <div className='solution-column'>
-              <h3>Down</h3>
-              {cluesSolution.down.map((item) => (
-                <div key={`down-${item.number}`} className='solution-item'>
-                  {item.number}. {item.clue} ({item.length})
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
-
-      {solutionLoaded && <GenerateCrossword />}
-    </div>
+      <button className='generate-solution-button' onClick={generateCrossword}>
+        Regenerate Solution
+      </button>
+    </>
+  )}
+  
+  {solutionLoaded && <GenerateCrossword />}
+</div>
   );
 };

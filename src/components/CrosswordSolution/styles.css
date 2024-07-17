@@ -16,6 +16,7 @@
   align-items: center;
   font-weight: bold;
   position: relative;
+  flex-direction: column;
 }
 
 .cell-number-solution {
