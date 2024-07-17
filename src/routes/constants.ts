@@ -1,3 +1,4 @@
 export enum Routes {
-  Index = '/'
+  Index = '/',
+  CrossWordSolution = '/crossword-solution'
 }
