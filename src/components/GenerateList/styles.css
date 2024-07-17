@@ -7,7 +7,7 @@
   cursor: pointer;
   border-radius: 20px;
   border: 1px solid var(--STROKE, #E7E7E7);
-  background: var(--Buttons, #317AAB);
+  background: var(--Buttons, #ffc7c1);
 }
 
 .generate-list-container {
@@ -28,7 +28,6 @@
 
 .word-item {
   margin-bottom: 10px;
-  border: solid 1px black;
   padding: 8px;
   width: 100%;
   box-sizing: border-box;
@@ -39,4 +38,10 @@
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+.word-input {
+  border-radius: 10px;
+  padding: 8px 16px;
+  border: 2px solid #ffbb6a;
 }

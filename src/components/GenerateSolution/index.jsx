@@ -14,7 +14,7 @@ export const GenerateSolution = () => {
     showCrosswordSolution, 
     setShowCrosswordSolution,
     solutionLoaded,
-    setSolutionLoaded
+    setSolutionLoaded,
   } = useApp();
 
   const generateCrossword = () => {

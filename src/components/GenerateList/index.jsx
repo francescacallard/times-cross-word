@@ -1,23 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './styles.css'
 import { useApp } from 'context/AppContext'
 import crosswordDataCorrect from 'components/GenerateSolution/constants'
 import { GenerateSolution } from 'components/GenerateSolution'
 
 export const GenerateList = () => {
-  const { words, setWords, showList, setShowList } = useApp();
-  const [listLoaded, setListLoaded] = useState(false);
+  const { words, setWords, showList, setShowList, listLoaded, setListLoaded, editedWords, setEditedWords } = useApp();
 
   const generateList = () => {
     const extractedWords = crosswordDataCorrect.entries.map((entry, index) => ({
       id: `${entry.direction}-${entry.number}-${index}`,
       word: entry.word,
-      clue: entry.clue,
       direction: entry.direction,
       number: entry.number
     }));
     
     setWords(extractedWords);
+    setEditedWords(extractedWords);
     setShowList(true);
     setListLoaded(true);
   }
@@ -27,7 +26,12 @@ export const GenerateList = () => {
       word.id === id ? { ...word, [field]: value } : word
     );
     setWords(updatedWords);
+    setEditedWords(updatedWords);
   }
+
+  useEffect(() => {
+    console.log('edited words', editedWords)
+  }, [editedWords])
 
   const renderWordList = (direction) => {
     return words
@@ -35,15 +39,9 @@ export const GenerateList = () => {
       .sort((a, b) => a.number - b.number)
       .map((word) => (
         <div key={word.id} className='word-item'>
-          <span>{word.number}. </span>
-          <input
+          <input className='word-input'
             value={word.word}
             onChange={(e) => handleWordChange(word.id, 'word', e.target.value)}
-          />
-          :
-          <input
-            value={word.clue}
-            onChange={(e) => handleWordChange(word.id, 'clue', e.target.value)}
           />
         </div>
       ));

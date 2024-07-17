@@ -16,7 +16,7 @@
   cursor: pointer;
   border-radius: 100px;
   border: 1px solid var(--STROKE, #E7E7E7);
-  background: var(--Buttons, #317AAB);
+  background: var(--Buttons, #ffc7c1);
 }
 
 .crossword-puzzle {
@@ -99,7 +99,7 @@
 }
 
 .correct-letter {
-  background-color: #ec6313;
+  background-color: #b5e49d;
 }
 
 .completed-word {
@@ -126,5 +126,5 @@
   cursor: pointer;
   border-radius: 100px;
   border: 1px solid var(--STROKE, #E7E7E7);
-  background: var(--Buttons, #317AAB);
+  background: var(--Buttons, #ffc7c1);
 }
