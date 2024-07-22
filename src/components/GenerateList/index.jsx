@@ -6,6 +6,22 @@ import { GenerateSolution } from 'components/GenerateSolution'
 
 export const GenerateList = () => {
   const { words, setWords, showList, setShowList, listLoaded, setListLoaded, editedWords, setEditedWords } = useApp();
+  //won't know whats across or down so take it out
+  //editable clues and rerunable
+
+async function generateCrossword() {
+  try {
+    const response = await fetch ('http://localhost:7071/api/generate')
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    const data = await response.json()
+    return data.crossword
+  } catch (error) {
+    console.error('There was a problem with your fetch operation:', error)
+  throw error
+  }
+}
 
   const generateList = () => {
     const extractedWords = crosswordDataCorrect.entries.map((entry, index) => ({
@@ -57,11 +73,11 @@ export const GenerateList = () => {
       {showList && (
         <div className='word-list'>
           <div className='list-column'>
-            <h3>Across</h3>
+            {/* <h3>Across</h3> */}
             {renderWordList('across')}
           </div>
           <div className='list-column'>
-            <h3>Down</h3>
+            {/* <h3>Down</h3> */}
             {renderWordList('down')}
           </div>
         </div>

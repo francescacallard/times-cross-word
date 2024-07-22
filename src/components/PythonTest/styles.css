@@ -1,0 +1,11 @@
+.generate-crossword-button-python {
+  font-size: 24px;
+  border-color: black;
+  color: white;
+  padding: 8px 16px;
+  margin: 20px;
+  cursor: pointer;
+  border-radius: 20px;
+  border: 1px solid var(--STROKE, #E7E7E7);
+  background: var(--Buttons, #4f92ff);
+}

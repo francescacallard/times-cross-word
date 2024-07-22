@@ -51,7 +51,7 @@
   cursor: pointer;
   border-radius: 100px;
   border: 1px solid var(--STROKE, #E7E7E7);
-  background: var(--Buttons, #ffc7c1);
+  background: var(--Buttons, #4f92ff);
 }
 
 .crossword-container,
