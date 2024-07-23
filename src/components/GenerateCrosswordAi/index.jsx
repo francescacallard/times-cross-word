@@ -79,7 +79,6 @@ export const GenerateCrosswordAi = () => {
             <div className="crossword-and-clues">
               <GeneratePuzzle 
                 solution={crosswordData.solution} 
-                display={crosswordData.display}
                 legend={crosswordData.legend}
               />
               <CluesAi legend={crosswordData.legend} />
