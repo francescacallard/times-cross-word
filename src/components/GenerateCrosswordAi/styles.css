@@ -52,7 +52,7 @@
   background: var(--Buttons, #4f92ff);
 }
 
-.show-legend-button {
+.show-clues-button {
   font-size: 24px;
   border-color: black;
   color: white;
@@ -62,4 +62,17 @@
   border-radius: 20px;
   border: 1px solid var(--STROKE, #E7E7E7);
   background: var(--Buttons, #4f92ff);
+}
+
+.crossword-and-clues {
+  display: flex;
+  justify-content: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 520px; /* 13 rows * 40px per cell */
+}
+
+.crossword-list-container, .crossword-solution-container-margin, .crossword-puzzle-container-margin {
+  margin-top: 20px;
+  margin-bottom: 20px
 }

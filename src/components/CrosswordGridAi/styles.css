@@ -1,6 +1,12 @@
 .crossword-grid {
-  display: inline-block;
+  display: grid;
+  grid-template-columns: repeat(13, 40px);
+  grid-template-rows: repeat(13, 40px);
+  gap: 0;
   border: 1px solid black;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0; /* Prevent the grid from shrinking */
 }
 
 .crossword-row {
