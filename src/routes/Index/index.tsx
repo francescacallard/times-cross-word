@@ -1,7 +1,7 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
-import { GenerateList } from 'components/GenerateList'
-import { PythonTest } from 'components/PythonTest'  
+// import { GenerateList } from 'components/GenerateList'
+import { GenerateCrosswordAi } from 'components/GenerateCrosswordAi'  
 import 'App.css'
 
 const Index: React.FC = () => {
@@ -9,8 +9,8 @@ const Index: React.FC = () => {
 
   return (
     <div className="App">
-      <PythonTest />
-      <GenerateList />
+      <GenerateCrosswordAi />
+      {/* <GenerateList /> */}
     </div>
   );
 }
