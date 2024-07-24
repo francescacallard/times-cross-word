@@ -1,0 +1,9 @@
+.generate-crossword-button-container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 520px;
+}

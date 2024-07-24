@@ -1,6 +1,6 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
-// import { GenerateList } from 'components/GenerateList'
+import { GenerateCrossword } from 'components/GenerateCrossword'
 import { GenerateCrosswordAi } from 'components/GenerateCrosswordAi'  
 import 'App.css'
 
@@ -10,7 +10,7 @@ const Index: React.FC = () => {
   return (
     <div className="App">
       <GenerateCrosswordAi />
-      {/* <GenerateList /> */}
+      <GenerateCrossword />
     </div>
   );
 }
