@@ -1,7 +1,7 @@
 .crossword-grid {
   display: grid;
-  grid-template-columns: repeat(13, 40px);
-  grid-template-rows: repeat(13, 40px);
+  /* grid-template-columns: repeat(13, 40px);
+  grid-template-rows: repeat(13, 40px); */
   gap: 0;
   border: 1px solid black;
   width: fit-content;

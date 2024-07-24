@@ -1,11 +1,20 @@
 import React from 'react'
 
+export const WordList = ({ list }) => {
+  if (!list) {
+    return <div>No crossword words available</div>;
+  }
 
-export const WordList = () => {
+  const words = list.trim().split('\n');
+
   return (
     <div className='word-list-container'>
-      Word List will go here
+      <h3>Word List</h3>
+      <ul>
+        {words.map((word, index) => (
+          <li key={index}>{word.trim().toUpperCase()}</li>
+        ))}
+      </ul>
     </div>
   )
 }
-

@@ -2,6 +2,9 @@ import React from 'react'
 import './styles.css'
 
 export const CrosswordGridAi = ({ solution }) => {
+  if (!solution) {
+    return <div>No crossword data available</div>;
+  }
   const rows = solution.trim().split('\n')
 
   return (

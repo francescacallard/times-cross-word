@@ -4,20 +4,11 @@ import './styles.css'
 
 export const GenerateCrosswordButton = () => {
   const {
-    crosswordData,
     setCrosswordData,
     isLoading,
     setIsLoading,
     error,
     setError,
-    showWordBank,
-    setShowWordBank,
-    showSolution,
-    setShowSolution,
-    showDisplay,
-    setShowDisplay,
-    showLegend,
-    setShowLegend
   } = useApp(); 
 
   const generateCrossword = () => {
