@@ -6,6 +6,7 @@ import { CrosswordGridAi } from 'components/CrosswordGridAi'
 import { SaveButton } from 'components/SaveButton'
 import { WordList } from 'components/WordList'
 import { CluesAi } from 'components/CluesAi'
+import { MenuTest } from 'components/MenuTest'
 
 export const GenerateCrossword = () => {
   const { crosswordData } = useApp();
@@ -13,6 +14,7 @@ export const GenerateCrossword = () => {
     
   return (
     <div className='whole-page-container'>
+      <MenuTest />
       <div className='left-side-container'>
         <div className='crossword-title-container'>
           <GenerateCrosswordButton />
