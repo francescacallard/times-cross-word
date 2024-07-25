@@ -1,27 +1,31 @@
 .whole-page-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   align-items: center;
   border: 1px solid red;
   justify-content: center;
+  width: 965px;
+  height: 747px;
 }
 
 .left-side-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 620px;
-  width: 620px;
+  height: 100%;
+  width: 50%;
   border: 1px solid blue;
-  justify-content: space-between;
+  /* justify-content: flex-start; */
+  
+  margin-right: -16px;
 }
 
 .right-side-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 620px;
-  width: 620px;
+  height: 100%;
+  width: 50%;
   border: 1px solid green;
   justify-content: space-around;
   
@@ -43,6 +47,12 @@
   margin-bottom: 20px;
 }
 
-/* .crossword-container {
-
-} */
+.title-container-across  {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid orange;
+  margin-right: 20px;
+  width: 965px;
+}

@@ -7,27 +7,25 @@ import { SaveButton } from 'components/SaveButton'
 import { WordList } from 'components/WordList'
 import { CluesAi } from 'components/CluesAi'
 import { MenuTest } from 'components/MenuTest'
+import { EmptyGrid } from 'components/EmptyGrid'
+import { CrosswordTitle } from 'components/CrosswordTitle'
 
 export const GenerateCrossword = () => {
   const { crosswordData } = useApp();
   console.log('crosswordData from crrrrrrooosssward): ', crosswordData);
     
   return (
-    <div className='whole-page-container'>
-      <MenuTest />
+    <div className='whole-page-container-title'>
+      <CrosswordTitle />
+      <div className='whole-page-container'>
+      {/* <MenuTest /> */}
       <div className='left-side-container'>
-        <div className='crossword-title-container'>
-          <GenerateCrosswordButton />
-        </div>
         <div className='crossword-container'>
           {crosswordData && crosswordData.solution ? (
             <CrosswordGridAi solution={crosswordData.solution}/>
           ) : (
-           ''
+           <EmptyGrid />
           )}
-        </div>
-        <div className='crossword-save-container'>
-          <SaveButton />
         </div>
       </div>
       
@@ -47,6 +45,7 @@ export const GenerateCrossword = () => {
           )}
         </div>
       </div>
+    </div>
     </div>
   )
 }

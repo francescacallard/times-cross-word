@@ -1,7 +1,7 @@
 import React from 'react'
 import { useApp } from 'context/AppContext'
 import './styles.css'
-
+import Sparkle from '../../assets/sparkleSmall.svg'
 export const GenerateCrosswordButton = () => {
   const {
     setCrosswordData,
@@ -35,11 +35,12 @@ export const GenerateCrosswordButton = () => {
 
   if (error) return <div>Error: {error}</div>;
   return (
-    <div className='generate-crossword-button-container'>
+    <div className='generate-crossword-button-container'>  
       <button className='generate-crossword-button' onClick={generateCrossword} disabled={isLoading}>
-      {isLoading ? 'Generating...' : 'Generate Crossword'}
+      <img src={Sparkle} alt='sparkle' className='sparkle'/>
+      {isLoading ? 'Generating...' : 'Generate New'}
       </button>
-      <button className='toggle-crossword-button'>Edit Mode</button>
+      {/* <button className='toggle-crossword-button'>Edit Mode</button> */}
     </div>
   )
 }
