@@ -17,6 +17,17 @@
   width: 76px;
   height: 33px;
   border: none;
+  transition: background-color 0.3s ease;
+}
+
+.answers-button.enabled {
+  background-color: black;
+  cursor: pointer;
+}
+
+.answers-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .puzzle-button {
@@ -34,4 +45,14 @@ font-size: 12px;
 font-style: normal;
 font-weight: 700;
 line-height: normal;
+}
+
+.answers-button.active {
+  background-color: black;
+  color: white;
+}
+
+.answers-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

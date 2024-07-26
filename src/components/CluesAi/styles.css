@@ -21,6 +21,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  padding-left: 8px;
 }
 
 .clues-list-section {
@@ -51,18 +52,21 @@
   padding: 8px;
   display: flex;
   align-items: flex-start;
-  border-bottom: 1px solid #F6F6F6;  ;
+  border-bottom: 1px solid #F6F6F6;
 }
 
 .clue-number {
   font-weight: bold;
-  width: 18px;
+  width: 18px; /* Fixed width for number */
+  min-width: 20px; /* Ensure it doesn't shrink */
   text-align: right;
   margin-right: 8px;
+  padding-right: 2px; /* Small padding to prevent numbers touching the edge */
 }
 
 .clue-text {
   flex-grow: 1;
+  padding-left: 2px; /* Small padding to prevent text touching the number */
 }
 
 /* Keeping these in case you want to use them later */

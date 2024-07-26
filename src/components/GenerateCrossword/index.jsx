@@ -10,6 +10,8 @@ import { WordsPlaced } from 'components/WordsPlaced'
 
 export const GenerateCrossword = () => {
   const { crosswordData } = useApp();
+
+ 
   console.log('crosswordData from crrrrrrooosssward): ', crosswordData);
     
   return (

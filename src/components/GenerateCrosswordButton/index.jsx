@@ -9,7 +9,16 @@ export const GenerateCrosswordButton = () => {
     setIsLoading,
     error,
     setError,
+    crosswordData,
+    setCrosswordDataLoaded
   } = useApp(); 
+
+
+
+  const updateCrosswordData = (data) => {
+    setCrosswordData(data);
+    setCrosswordDataLoaded(true);
+  };
 
   const generateCrossword = () => {
     setIsLoading(true);
@@ -23,6 +32,7 @@ export const GenerateCrosswordButton = () => {
       })
       .then(data => {
         setCrosswordData(data);
+        updateCrosswordData(data);
         setIsLoading(false);
         console.log('data from generated button:', data);
       })
@@ -40,7 +50,6 @@ export const GenerateCrosswordButton = () => {
       <img src={Sparkle} alt='sparkle' className='sparkle'/>
       {isLoading ? 'Generating...' : 'Generate New'}
       </button>
-      {/* <button className='toggle-crossword-button'>Edit Mode</button> */}
     </div>
   )
 }

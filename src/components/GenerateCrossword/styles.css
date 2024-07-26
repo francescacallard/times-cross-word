@@ -26,7 +26,7 @@
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   justify-content: center;
   width: 982px;
   height: 554px;
@@ -38,7 +38,7 @@
   align-items: center;
   height: 100%;
   width: 50%;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   /* justify-content: flex-start; */
   
   margin-right: -28px;
@@ -63,14 +63,14 @@ gap: 8px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: 1px solid yellow;
+  /* border: 1px solid yellow; */
 }
 
 .crossword-save-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  border: 1px solid purple;
+  /* border: 1px solid purple; */
   margin-bottom: 20px;
 }
 
@@ -79,7 +79,7 @@ gap: 8px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid orange;
+  /* border: 1px solid orange; */
   margin-right: 20px;
   width: 982px;
 }
