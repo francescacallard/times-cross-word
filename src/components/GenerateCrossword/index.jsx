@@ -31,18 +31,10 @@ export const GenerateCrossword = () => {
             
             <div className='right-side-container'>
               <div className='word-list-container'>
-                {crosswordData && crosswordData.word_bank ? (
-                  <WordList list={crosswordData.word_bank}/>
-                ) : (
-                  ''
-                )}
+                <WordList list={crosswordData?.word_bank || []} />
               </div>
               <div className='clues-container'>
-                {crosswordData && crosswordData.legend ? (
-                  <CluesAi clues={crosswordData.legend}/>
-                ) : (
-                  ''
-                )}
+                <CluesAi clues={crosswordData?.legend || ''} />
               </div>
             </div>
           </div>
