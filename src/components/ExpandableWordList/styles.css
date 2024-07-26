@@ -1,0 +1,21 @@
+.expandable-word-list-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.expandable-word-list-title {
+  width: 242px;
+  border: solid 1px #000;
+}
+
+.expandable-word-list-across, .expandable-word-list-down {
+  width: 242px;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: solid 1px #000;
+  align-items: center;
+}

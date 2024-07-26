@@ -47,13 +47,16 @@
 .right-side-container {
   display: flex;
   flex-direction: row;
-  align-items: center;
   height: 100%;
-  width: 50%;
-  border: 1px solid green;
-  justify-content: space-around;
-  
-} 
+gap: 8px;
+}
+
+.word-list-container,
+.clues-container {
+  flex: 1;
+  width: 100%;
+  margin-bottom: 20px; /* Add some space between the components */
+}
 
 .crossword-title-container {
   display: flex;
