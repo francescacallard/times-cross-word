@@ -1,12 +1,9 @@
 import React from 'react'
 import './styles.css'
 import { useApp } from 'context/AppContext'
-import { GenerateCrosswordButton } from 'components/GenerateCrosswordButton'
 import { CrosswordGridAi } from 'components/CrosswordGridAi'
-import { SaveButton } from 'components/SaveButton'
 import { WordList } from 'components/WordList'
 import { CluesAi } from 'components/CluesAi'
-import { MenuTest } from 'components/MenuTest'
 import { EmptyGrid } from 'components/EmptyGrid'
 import { CrosswordTitle } from 'components/CrosswordTitle'
 
@@ -15,6 +12,8 @@ export const GenerateCrossword = () => {
   console.log('crosswordData from crrrrrrooosssward): ', crosswordData);
     
   return (
+    <div className='center-wrapper'>
+    <div className='whole-app-container'>
     <div className='whole-page-container-title'>
       <CrosswordTitle />
       <div className='whole-page-container'>
@@ -45,6 +44,8 @@ export const GenerateCrossword = () => {
           )}
         </div>
       </div>
+    </div>
+    </div>
     </div>
     </div>
   )

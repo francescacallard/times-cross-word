@@ -1,10 +1,12 @@
 import React from 'react'
 import './styles.css'
 import { GenerateCrosswordButton } from '../GenerateCrosswordButton'
-import Sparkle from '../../assets/sparkle.svg'
+import Sparkle from '../../assets/orangeSparkle.svg'
+import { Toggle } from 'components/Toggle'
 
 export const CrosswordTitle = () =>{
   return (
+    <div className='title-buttons-container'>
     <div>
       <header className='title-container-across'>
         <div className='title-img-container'>
@@ -13,8 +15,10 @@ export const CrosswordTitle = () =>{
       </div>
       <div className="header-buttons">
       <GenerateCrosswordButton />
+      <Toggle />
       </div>
     </header>
+    </div>
     </div>
   )
 }

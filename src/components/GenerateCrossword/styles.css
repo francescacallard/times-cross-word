@@ -1,11 +1,35 @@
+/* html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+} */
+
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* This ensures it takes up at least the full viewport height */
+}
+
+.whole-app-container {
+  border-radius: 10px;
+  border: 1px solid #EBEDF0;
+  background: #FFF;
+  box-shadow: 4px 4px 4px 0px rgba(133, 133, 133, 0.10);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .whole-page-container {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   border: 1px solid red;
   justify-content: center;
-  width: 965px;
-  height: 747px;
+  width: 982px;
+  height: 554px;
 }
 
 .left-side-container {
@@ -17,7 +41,7 @@
   border: 1px solid blue;
   /* justify-content: flex-start; */
   
-  margin-right: -16px;
+  margin-right: -28px;
 }
 
 .right-side-container {
@@ -54,5 +78,5 @@
   justify-content: space-between;
   border: 1px solid orange;
   margin-right: 20px;
-  width: 965px;
+  width: 982px;
 }

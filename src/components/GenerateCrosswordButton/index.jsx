@@ -1,7 +1,7 @@
 import React from 'react'
 import { useApp } from 'context/AppContext'
 import './styles.css'
-import Sparkle from '../../assets/sparkleSmall.svg'
+import Sparkle from '../../assets/whiteSparkle.svg'
 export const GenerateCrosswordButton = () => {
   const {
     setCrosswordData,
