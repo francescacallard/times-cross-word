@@ -11,6 +11,7 @@ import { GeneratePuzzle } from 'components/GeneratePuzzle'
 
 export const GenerateCrossword = () => {
   const { crosswordData, showPuzzle } = useApp();
+  const [selectedWord, setSelectedWord] = useState(null)
 
   console.log('crosswordData from crrrrrrooosssward): ', crosswordData);
   
@@ -25,9 +26,9 @@ export const GenerateCrossword = () => {
                 {crosswordData && crosswordData.solution ? (
                   <>
                     {showPuzzle ? (
-                      <GeneratePuzzle solution={crosswordData.solution} legend={crosswordData.legend} />
+                      <GeneratePuzzle solution={crosswordData.solution} legend={crosswordData.legend} selectedWord={selectedWord} />
                     ) : (
-                      <CrosswordGridAi solution={crosswordData.solution}/>
+                      <CrosswordGridAi solution={crosswordData.solution} selectedWord={selectedWord} legend={crosswordData.legend}/>
                     )}
                     <WordsPlaced />
                   </>
@@ -39,10 +40,10 @@ export const GenerateCrossword = () => {
             
             <div className='right-side-container'>
               <div className='word-list-container'>
-                <WordList list={crosswordData?.word_bank || []} />
+                <WordList list={crosswordData?.word_bank || []} selectedWord={selectedWord} setSelectedWord={setSelectedWord} />
               </div>
               <div className='clues-container'>
-                <CluesAi clues={crosswordData?.legend || []} />
+                <CluesAi clues={crosswordData?.legend || []}  selectedWord={selectedWord} setSelectedWord={setSelectedWord}/>
               </div>
             </div>
           </div>
