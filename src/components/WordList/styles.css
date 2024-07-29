@@ -25,11 +25,11 @@
   padding-left: 8px;
 }
 
-.word-list-scrollable {
+/* .word-list-scrollable {
   overflow-y: auto; 
   flex-grow: 1;
   border: none;
-}
+} */
 
 .word-list-section {
   margin-bottom: 0px;

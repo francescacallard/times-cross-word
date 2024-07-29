@@ -51,12 +51,18 @@
 gap: 8px;
 }
 
-.word-list-container,
-.clues-container {
+.word-list-container, .clues-container {
   flex: 1;
   width: 100%;
-  margin-bottom: 20px; /* Add some space between the components */
+  margin-bottom: 20px;
+  /* border: solid 1px red; */
 }
+
+/* .clues-container {
+  flex: 1;
+  width: 100%;
+  margin-bottom: 20px;
+} */
 
 .crossword-title-container {
   display: flex;

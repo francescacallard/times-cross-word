@@ -12,8 +12,9 @@
 }
 
 .generate-crossword-button {
-  display: inline-flex;
+  display: flex;
   height: 42px;
+  width: 143px;
   padding: 16px;
   justify-content: center;
   align-items: center;
@@ -28,6 +29,6 @@
   font-weight: 700;
   line-height: normal;
   color: #FFFFFF ;
-  
+  cursor: pointer;
 }
 

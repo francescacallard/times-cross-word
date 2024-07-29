@@ -36,7 +36,7 @@ export const GenerateCrossword = () => {
                 <WordList list={crosswordData?.word_bank || []} />
               </div>
               <div className='clues-container'>
-                <CluesAi clues={crosswordData?.legend || ''} />
+                <CluesAi clues={crosswordData?.legend || []} />
               </div>
             </div>
           </div>

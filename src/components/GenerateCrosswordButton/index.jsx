@@ -2,6 +2,7 @@ import React from 'react'
 import { useApp } from 'context/AppContext'
 import './styles.css'
 import Sparkle from '../../assets/whiteSparkle.svg'
+import { Spinner } from 'components/Spinner'
 export const GenerateCrosswordButton = () => {
   const {
     setCrosswordData,
@@ -47,8 +48,12 @@ export const GenerateCrosswordButton = () => {
   return (
     <div className='generate-crossword-button-container'>  
       <button className='generate-crossword-button' onClick={generateCrossword} disabled={isLoading}>
-      <img src={Sparkle} alt='sparkle' className='sparkle'/>
-      {isLoading ? 'Generating...' : 'Generate New'}
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <img src={Sparkle} alt='sparkle' className='sparkle'/>
+        )}
+        {isLoading ? 'Generating' : 'Generate New'}
       </button>
     </div>
   )
