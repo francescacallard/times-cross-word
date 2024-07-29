@@ -2,6 +2,10 @@ import React from 'react'
 import './styles.css'
 
 export const GeneratePuzzle = ({ solution, legend }) => {
+  if (!solution || !legend) {
+    return null; // or return some loading indicator
+  }
+
   const solutionRows = solution.trim().split('\n')
   
   // Parse the legend to get word start positions

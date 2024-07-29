@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './styles.css'
 import { useApp } from 'context/AppContext'
 import { CrosswordGridAi } from 'components/CrosswordGridAi'
@@ -7,27 +7,38 @@ import { CluesAi } from 'components/CluesAi'
 import { EmptyGrid } from 'components/EmptyGrid'
 import { CrosswordTitle } from 'components/CrosswordTitle'
 import { WordsPlaced } from 'components/WordsPlaced'
+import { GeneratePuzzle } from 'components/GeneratePuzzle'
 
 export const GenerateCrossword = () => {
   const { crosswordData } = useApp();
+  const [showPuzzle, setShowPuzzle] = useState(false);
 
- 
   console.log('crosswordData from crrrrrrooosssward): ', crosswordData);
-    
+  
+  const handleToggle = (button) => {
+    setShowPuzzle(button === 'puzzle');
+  };
+
   return (
     <div className='center-wrapper'>
       <div className='whole-app-container'>
         <div className='whole-page-container-title'>
-          <CrosswordTitle />
+          <CrosswordTitle onToggle={handleToggle} />
           <div className='whole-page-container'>
             <div className='left-side-container'>
               <div className='crossword-container'>
                 {crosswordData && crosswordData.solution ? (
-                  <CrosswordGridAi solution={crosswordData.solution}/>
+                  <>
+                    {showPuzzle ? (
+                      <GeneratePuzzle solution={crosswordData.solution} legend={crosswordData.legend} />
+                    ) : (
+                      <CrosswordGridAi solution={crosswordData.solution}/>
+                    )}
+                    <WordsPlaced />
+                  </>
                 ) : (
                   <EmptyGrid />
                 )}
-                <WordsPlaced /> 
               </div>
             </div>
             
