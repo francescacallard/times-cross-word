@@ -4,7 +4,7 @@ import ArrowDisabled from '../../assets/arrowDisabled.svg';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
-export const WordList = ({ list }) => {
+export const WordList = ({ word_orientation }) => {
   const { showPuzzle } = useApp();
   const [acrossExpanded, setAcrossExpanded] = useState(false);
   const [downExpanded, setDownExpanded] = useState(false);
@@ -12,24 +12,26 @@ export const WordList = ({ list }) => {
   const [downWords, setDownWords] = useState([]);
 
   useEffect(() => {
-    if (list && list.length > 0) {
-      const words = Array.isArray(list) ? list : list.trim().split('\n');
-      const midpoint = Math.ceil(words.length / 2);
-      setAcrossWords(words.slice(0, midpoint));
-      setDownWords(words.slice(midpoint));
+    if (word_orientation && word_orientation.length > 0) {
+      const acrossWords = word_orientation
+        .filter(item => item.orientation === 'across')
+        .map(item => item.word);
+      const downWords = word_orientation
+        .filter(item => item.orientation === 'down')
+        .map(item => item.word);
+      setAcrossWords(acrossWords);
+      setDownWords(downWords);
     } else {
       setAcrossWords([]);
       setDownWords([]);
     }
-  }, [list]);
+  }, [word_orientation]);
 
   useEffect(() => {
     if (showPuzzle) {
-      // Collapse sections when switching to puzzle mode
       setAcrossExpanded(false);
       setDownExpanded(false);
     } else {
-      // Expand sections when switching to answer mode
       setAcrossExpanded(true);
       setDownExpanded(true);
     }
@@ -87,7 +89,7 @@ export const WordList = ({ list }) => {
           <div>
             {downWords.map((word, index) => (
               <div key={index} className="word-item">
-                <span className="word-number">{index + acrossWords.length + 1}</span>
+                <span className="word-number">{index + 1}</span>
                 <span className="word-text">{capitalizeFirstLetter(word.trim())}</span>
               </div>
             ))}

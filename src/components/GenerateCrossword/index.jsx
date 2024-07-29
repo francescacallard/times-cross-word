@@ -36,10 +36,9 @@ export const GenerateCrossword = () => {
                 )}
               </div>
             </div>
-            
             <div className='right-side-container'>
               <div className='word-list-container'>
-                <WordList list={crosswordData?.word_bank || []} />
+                <WordList word_orientation={crosswordData?.word_orientation || []} />
               </div>
               <div className='clues-container'>
                 <CluesAi clues={crosswordData?.legend || []} />
