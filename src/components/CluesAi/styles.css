@@ -78,6 +78,6 @@
   transition: transform 0.3s ease;
 }
 
-.clues-list-header.expanded .arrow-icon {
+/* .clues-list-header.expanded .arrow-icon {
   transform: rotate(180deg);
-}
+} */

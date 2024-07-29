@@ -10,20 +10,15 @@ import { WordsPlaced } from 'components/WordsPlaced'
 import { GeneratePuzzle } from 'components/GeneratePuzzle'
 
 export const GenerateCrossword = () => {
-  const { crosswordData } = useApp();
-  const [showPuzzle, setShowPuzzle] = useState(false);
+  const { crosswordData, showPuzzle } = useApp();
 
   console.log('crosswordData from crrrrrrooosssward): ', crosswordData);
   
-  const handleToggle = (button) => {
-    setShowPuzzle(button === 'puzzle');
-  };
-
   return (
     <div className='center-wrapper'>
       <div className='whole-app-container'>
         <div className='whole-page-container-title'>
-          <CrosswordTitle onToggle={handleToggle} />
+          <CrosswordTitle />
           <div className='whole-page-container'>
             <div className='left-side-container'>
               <div className='crossword-container'>

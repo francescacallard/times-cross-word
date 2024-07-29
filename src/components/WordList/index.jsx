@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useApp } from 'context/AppContext';
+import ArrowDisabled from '../../assets/arrowDisabled.svg';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
 export const WordList = ({ list }) => {
-  const [acrossExpanded, setAcrossExpanded] = useState(true);
-  const [downExpanded, setDownExpanded] = useState(true);
+  const { showPuzzle } = useApp();
+  const [acrossExpanded, setAcrossExpanded] = useState(false);
+  const [downExpanded, setDownExpanded] = useState(false);
   const [acrossWords, setAcrossWords] = useState([]);
   const [downWords, setDownWords] = useState([]);
 
@@ -20,11 +23,25 @@ export const WordList = ({ list }) => {
     }
   }, [list]);
 
-  const toggleSection = (section) => {
-    if (section === 'across') {
-      setAcrossExpanded(!acrossExpanded);
+  useEffect(() => {
+    if (showPuzzle) {
+      // Collapse sections when switching to puzzle mode
+      setAcrossExpanded(false);
+      setDownExpanded(false);
     } else {
-      setDownExpanded(!downExpanded);
+      // Expand sections when switching to answer mode
+      setAcrossExpanded(true);
+      setDownExpanded(true);
+    }
+  }, [showPuzzle]);
+
+  const toggleSection = (section) => {
+    if (!showPuzzle) {
+      if (section === 'across') {
+        setAcrossExpanded(!acrossExpanded);
+      } else {
+        setDownExpanded(!downExpanded);
+      }
     }
   };
 
@@ -37,11 +54,15 @@ export const WordList = ({ list }) => {
       <h3 className='word-list-title'>Word list</h3>
       
       <div className='word-list-section'>
-        <div onClick={() => toggleSection('across')} className={`word-list-header ${acrossExpanded ? 'expanded' : ''}`}>
+        <div onClick={() => toggleSection('across')} className='word-list-header'>
           <span>Across</span>
-          <img src={Arrow} alt='Arrow' className="arrow-icon" />
+          <img 
+            src={acrossExpanded ? Arrow : ArrowDisabled}
+            alt={acrossExpanded ? 'Expanded arrow' : 'Collapsed arrow'}
+            className={`arrow-icon ${acrossExpanded ? 'expanded' : ''}`}
+          />
         </div>
-        {acrossExpanded && (
+        {acrossExpanded && !showPuzzle && (
           <div>
             {acrossWords.map((word, index) => (
               <div key={index} className="word-item">
@@ -54,11 +75,15 @@ export const WordList = ({ list }) => {
       </div>
 
       <div className='word-list-section'>
-        <div onClick={() => toggleSection('down')} className={`word-list-header ${downExpanded ? 'expanded' : ''}`}>
+        <div onClick={() => toggleSection('down')} className='word-list-header'>
           <span>Down</span>
-          <img src={Arrow} alt='Arrow' className="arrow-icon" />
+          <img 
+            src={downExpanded ? Arrow : ArrowDisabled}
+            alt={downExpanded ? 'Expanded arrow' : 'Collapsed arrow'}
+            className={`arrow-icon ${downExpanded ? 'expanded' : ''}`}
+          />
         </div>
-        {downExpanded && (
+        {downExpanded && !showPuzzle && (
           <div>
             {downWords.map((word, index) => (
               <div key={index} className="word-item">

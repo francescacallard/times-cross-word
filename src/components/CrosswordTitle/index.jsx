@@ -4,7 +4,7 @@ import { GenerateCrosswordButton } from '../GenerateCrosswordButton'
 import Sparkle from '../../assets/orangeSparkle.svg'
 import { Toggle } from 'components/Toggle'
 
-export const CrosswordTitle = ({ onToggle }) =>{
+export const CrosswordTitle = () =>{
   return (
     <div className='title-buttons-container'>
     <div>
@@ -15,7 +15,7 @@ export const CrosswordTitle = ({ onToggle }) =>{
       </div>
       <div className="header-buttons">
       <GenerateCrosswordButton />
-      <Toggle onToggle={onToggle} />
+      <Toggle />
       </div>
     </header>
     </div>

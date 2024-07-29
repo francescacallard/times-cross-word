@@ -47,10 +47,14 @@ export const CluesAi = ({ clues }) => {
       <h3 className='clues-list-title'>Clues</h3>
       
       <div className='clues-list-section'>
-      <div onClick={() => toggleSection('across')} className={`clues-list-header ${acrossExpanded ? 'expanded' : ''}`}>
-  <span>Across</span>
-  <img src={Arrow} alt='Arrow' className="arrow-icon" />
-</div>
+        <div onClick={() => toggleSection('across')} className={`clues-list-header ${acrossExpanded ? 'expanded' : ''}`}>
+          <span>Across</span>
+          <img 
+            src={acrossExpanded ? Arrow : ArrowDisabled}
+            alt={acrossExpanded ? 'Expanded arrow' : 'Collapsed arrow'}
+            className={`arrow-icon ${acrossExpanded ? 'expanded' : ''}`}
+          />
+        </div>
         {acrossExpanded && (
           <div>
             {acrossClues.map((clue, index) => (
@@ -63,10 +67,14 @@ export const CluesAi = ({ clues }) => {
       </div>
 
       <div className='clues-list-section'>
-      <div onClick={() => toggleSection('down')} className={`clues-list-header ${downExpanded ? 'expanded' : ''}`}>
-  <span>Down</span>
-  <img src={Arrow} alt='Arrow' className="arrow-icon" />
-</div>
+        <div onClick={() => toggleSection('down')} className={`clues-list-header ${downExpanded ? 'expanded' : ''}`}>
+          <span>Down</span>
+          <img 
+            src={downExpanded ? Arrow : ArrowDisabled}
+            alt={downExpanded ? 'Expanded arrow' : 'Collapsed arrow'}
+            className={`arrow-icon ${downExpanded ? 'expanded' : ''}`}
+          />
+        </div>
         {downExpanded && (
           <div>
             {downClues.map((clue, index) => (
