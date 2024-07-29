@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from 'context/AppContext';
+import { useClue } from 'context/ClueContext';
 import ArrowDisabled from '../../assets/arrowDisabled.svg';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
 export const WordList = ({ list }) => {
   const { showPuzzle } = useApp();
+  const {selectedWord, setSelectedWord} = useClue();
   const [acrossExpanded, setAcrossExpanded] = useState(false);
   const [downExpanded, setDownExpanded] = useState(false);
   const [acrossWords, setAcrossWords] = useState([]);
   const [downWords, setDownWords] = useState([]);
+  // const [selectedWord, setSelectedWord] = useState(null);
 
   useEffect(() => {
     if (list && list.length > 0) {
@@ -25,11 +28,9 @@ export const WordList = ({ list }) => {
 
   useEffect(() => {
     if (showPuzzle) {
-      // Collapse sections when switching to puzzle mode
       setAcrossExpanded(false);
       setDownExpanded(false);
     } else {
-      // Expand sections when switching to answer mode
       setAcrossExpanded(true);
       setDownExpanded(true);
     }
@@ -49,6 +50,12 @@ export const WordList = ({ list }) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  const handleWordSelect = (word) => {
+    console.log('Word selected:', word);
+    console.log('Word list:', [...acrossWords, ...downWords]);
+    setSelectedWord(word === selectedWord ? null : word);
+  }
+
   return (
     <div className='word-list-container'>
       <h3 className='word-list-title'>Word list</h3>
@@ -65,7 +72,11 @@ export const WordList = ({ list }) => {
         {acrossExpanded && !showPuzzle && (
           <div>
             {acrossWords.map((word, index) => (
-              <div key={index} className="word-item">
+              <div 
+              key={index} 
+              className={`word-item ${word === selectedWord ? 'selected' : ''}`}
+              onClick={() => handleWordSelect(word)}
+            >
                 <span className="word-number">{index + 1}</span>
                 <span className="word-text">{capitalizeFirstLetter(word.trim())}</span>
               </div>
@@ -86,7 +97,11 @@ export const WordList = ({ list }) => {
         {downExpanded && !showPuzzle && (
           <div>
             {downWords.map((word, index) => (
-              <div key={index} className="word-item">
+              <div 
+              key={index} 
+              className={`word-item ${word === selectedWord ? 'selected' : ''}`}
+              onClick={() => handleWordSelect(word)}
+            >
                 <span className="word-number">{index + acrossWords.length + 1}</span>
                 <span className="word-text">{capitalizeFirstLetter(word.trim())}</span>
               </div>

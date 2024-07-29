@@ -1,7 +1,9 @@
 import React from 'react'
+import { useClue } from '../../context/ClueContext'
 import './styles.css'
 
 export const GeneratePuzzle = ({ solution, legend }) => {
+  const { selectedClue, setSelectedClue } = useClue()
   if (!solution || !legend) {
     return null; // or return some loading indicator
   }
@@ -24,6 +26,23 @@ export const GeneratePuzzle = ({ solution, legend }) => {
     numberGrid[row][col] = number
   })
 
+  const shouldHighlight = (rowIndex, cellIndex) => {
+    if (!selectedClue) return false;
+    const match = selectedClue.match(/(\d+)\. \((\d+),(\d+)\) (across|down): (.+)/);  
+    if (match) {
+      const [, number, startCol, startRow, direction] = match;
+      const startRowIndex = parseInt(startRow) - 1;
+      const startCellIndex = parseInt(startCol) - 1;
+
+      if (direction === 'across') {
+        return rowIndex === startRowIndex && cellIndex >= startCellIndex;
+      } else if (direction === 'down') {
+        return cellIndex === startCellIndex && rowIndex >= startRowIndex;
+      }
+    }
+    return false;
+  };
+
   return (
     <div className="crossword-grid">
       {solutionRows.map((row, rowIndex) => (
@@ -31,7 +50,7 @@ export const GeneratePuzzle = ({ solution, legend }) => {
           {row.trim().split(' ').map((cell, cellIndex) => (
             <div
               key={`${rowIndex}-${cellIndex}`}
-              className={`crossword-cell ${cell === '-' ? 'black' : 'white'}`}
+              className={`crossword-cell ${cell === '-' ? 'black' : 'white'} ${shouldHighlight(rowIndex, cellIndex) ? 'highlighted' : ''}`}
             >
               {cell !== '-' && (
                 <>

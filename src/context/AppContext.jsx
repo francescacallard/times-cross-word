@@ -29,13 +29,20 @@ export const AppProvider = ({ children }) => {
   const [showLegend, setShowLegend] = useState(false);
   const [crosswordDataLoaded, setCrosswordDataLoaded] = useState(false);
   const [showPuzzle, setShowPuzzle] = useState(false);
+  const [acrossExpanded, setAcrossExpanded] = useState(true);
+  const [downExpanded, setDownExpanded] = useState(true);
+  const [acrossClues, setAcrossClues] = useState([]);
+  const [downClues, setDownClues] = useState([]);
+  const [selectedClue, setSelectedClue] = useState(null);
 
   const togglePuzzleView = (view) => {
     setShowPuzzle(view === 'puzzle')
   }
 
   return (
-    <AppContext.Provider value={{ list, setList, randomList, setRandomList, grid, setGrid, crosswordData, setCrosswordData, error, setError, numbers, setNumbers, words, setWords, showList, setShowList, clues, setClues, showCrossword, setShowCrossword, crosswordGrid, setCrosswordGrid, showCrosswordSolution, setShowCrosswordSolution, cluesSolution, setCluesSolution, solutionLoaded, setSolutionLoaded, correctLetters, setCorrectLetters, correctWords, setCorrectWords, checkMode, setCheckMode, listLoaded, setListLoaded, editedWords, setEditedWords, isLoading, setIsLoading, showWordBank, setShowWordBank, showSolution, setShowSolution, showDisplay, setShowDisplay, showLegend, setShowLegend, crosswordDataLoaded, setCrosswordDataLoaded, showPuzzle, setShowPuzzle, togglePuzzleView  }}>
+    <AppContext.Provider value={{ list, setList, randomList, setRandomList, grid, setGrid, crosswordData, setCrosswordData, error, setError, numbers, setNumbers, words, setWords, showList, setShowList, clues, setClues, showCrossword, setShowCrossword, crosswordGrid, setCrosswordGrid, showCrosswordSolution, setShowCrosswordSolution, cluesSolution, setCluesSolution, solutionLoaded, setSolutionLoaded, correctLetters, setCorrectLetters, correctWords, setCorrectWords, checkMode, setCheckMode, listLoaded, setListLoaded, editedWords, setEditedWords, isLoading, setIsLoading, showWordBank, setShowWordBank, showSolution, setShowSolution, showDisplay, setShowDisplay, showLegend, setShowLegend, crosswordDataLoaded, setCrosswordDataLoaded, showPuzzle, setShowPuzzle, togglePuzzleView,
+      acrossExpanded, setAcrossExpanded, downExpanded, setDownExpanded, acrossClues, setAcrossClues, downClues, setDownClues, selectedClue, setSelectedClue
+      }}>
       {children}
     </AppContext.Provider>
   )

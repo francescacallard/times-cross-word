@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ArrowDisabled from '../../assets/arrowDisabled.svg';
+import { useClue } from '../../context/ClueContext';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
@@ -8,7 +9,8 @@ export const CluesAi = ({ clues }) => {
   const [downExpanded, setDownExpanded] = useState(true);
   const [acrossClues, setAcrossClues] = useState([]);
   const [downClues, setDownClues] = useState([]);
-
+  const { selectedClue, setSelectedClue } = useClue();
+  
   useEffect(() => {
     if (clues && clues.length > 0) {
       const cluesList = clues.trim().split('\n');
@@ -32,14 +34,25 @@ export const CluesAi = ({ clues }) => {
     const match = clue.match(/(\d+)\. \((\d+),(\d+)\) (across|down): (.+)/);
     if (match) {
       const [, number, , , , clueText] = match;
+      console.log('clueText', clueText);
+      console.log('number', number);
+      console.log('clue', clue);
+      console.log('match', match)
       return (
-        <div className="clue-item">
+        <div 
+          className={`clue-item ${clue === selectedClue ? 'selected' : ''}`}
+          onClick={() => handleClueSelect(clue)}
+        >
           <span className="clue-number">{number}</span>
           <span className="clue-text">{clueText}</span>
         </div>
       );
     }
     return null;
+  };
+
+  const handleClueSelect = (clue) => {
+    setSelectedClue(clue === selectedClue ? null : clue);
   };
 
   return (
@@ -58,9 +71,9 @@ export const CluesAi = ({ clues }) => {
         {acrossExpanded && (
           <div>
             {acrossClues.map((clue, index) => (
-              <React.Fragment key={index}>
+              <div key={index}>
                 {renderClue(clue)}
-              </React.Fragment>
+              </div>
             ))}
           </div>
         )}
@@ -78,9 +91,9 @@ export const CluesAi = ({ clues }) => {
         {downExpanded && (
           <div>
             {downClues.map((clue, index) => (
-              <React.Fragment key={index}>
+              <div key={index}>
                 {renderClue(clue)}
-              </React.Fragment>
+              </div>
             ))}
           </div>
         )}

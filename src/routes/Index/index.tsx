@@ -1,5 +1,6 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
+import { ClueProvider } from '../../context/ClueContext'
 import { GenerateCrossword } from 'components/GenerateCrossword'
 import 'App.css'
 
@@ -8,7 +9,9 @@ const Index: React.FC = () => {
 
   return (
     <div className="App">
+      <ClueProvider>
       <GenerateCrossword />
+      </ClueProvider>
     </div>
   );
 }

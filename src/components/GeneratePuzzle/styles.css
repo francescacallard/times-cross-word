@@ -53,3 +53,7 @@
   left: 2px;
   font-size: 10px;
 }
+
+.crossword-cell.highlighted {
+  background-color: #ffff00; /* or any color you prefer */
+}
