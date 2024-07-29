@@ -1,0 +1,75 @@
+.toggle-background {
+  background-color: #F9FAFB;
+  border: 1px solid #EBEDF0;
+  border-radius: 100px;
+  display: flex;  
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 150px;
+  height: 43px;
+  padding: 0px 8px;;
+}
+
+.toggle-button {
+  border-radius: 100px;
+  width: 76px;
+  height: 33px;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.toggle-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Default states */
+.answers-button {
+  background: #C5C5C5;
+  color: #ffffff;
+}
+
+.puzzle-button {
+  background: #F9FAFB;
+  color: #C5C5C5;
+}
+
+/* Enabled states */
+.answers-button.enabled {
+  background-color: black;
+  color: white;
+}
+
+.puzzle-button.enabled {
+  background: #F9FAFB;
+  color: #C5C5C5;
+}
+
+/* Active states */
+.answers-button.active {
+  background-color: black;
+  color: white;
+}
+
+.puzzle-button.active {
+  background-color: #DB6B30; /* Orange color */
+  color: white;
+}
+
+/* Inactive states when the other button is active */
+.answers-button.enabled:not(.active) {
+  background: #F9FAFB;
+  color:#C5C5C5;
+}
+
+.puzzle-button.enabled:not(.active) {
+  background: #F9FAFB;
+  color: #C5C5C5;
+}

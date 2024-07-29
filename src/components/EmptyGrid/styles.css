@@ -1,0 +1,18 @@
+.empty-grid-container {
+  display: inline-block;
+  border: 4px solid #000;
+}
+
+.grid-row {
+  display: flex;
+}
+
+.grid-cell {
+  width: 32px;
+  height: 32px;
+  border-top: 0.5px solid #8A8A8A;
+  border-right: 0.5px solid #8A8A8A;
+  border-bottom: 1px solid #8A8A8A;
+  border-left: 0.5px solid #8A8A8A;
+  background: #000;
+}
