@@ -4,28 +4,28 @@ import ArrowDisabled from '../../assets/arrowDisabled.svg';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
-export const WordList = ({ word_orientation }) => {
-  const { showPuzzle } = useApp();
+export const WordList = () => {
+  const { showPuzzle, crosswordData } = useApp();
   const [acrossExpanded, setAcrossExpanded] = useState(false);
   const [downExpanded, setDownExpanded] = useState(false);
   const [acrossWords, setAcrossWords] = useState([]);
   const [downWords, setDownWords] = useState([]);
 
   useEffect(() => {
-    if (word_orientation && word_orientation.length > 0) {
-      const acrossWords = word_orientation
+    if (crosswordData && crosswordData.words && crosswordData.words.length > 0) {
+      const acrossWords = crosswordData.words
         .filter(item => item.orientation === 'across')
-        .map(item => item.word);
-      const downWords = word_orientation
+        .sort((a, b) => a.number - b.number);
+      const downWords = crosswordData.words
         .filter(item => item.orientation === 'down')
-        .map(item => item.word);
+        .sort((a, b) => a.number - b.number);
       setAcrossWords(acrossWords);
       setDownWords(downWords);
     } else {
       setAcrossWords([]);
       setDownWords([]);
     }
-  }, [word_orientation]);
+  }, [crosswordData]);
 
   useEffect(() => {
     if (showPuzzle) {
@@ -66,10 +66,10 @@ export const WordList = ({ word_orientation }) => {
         </div>
         {acrossExpanded && !showPuzzle && (
           <div>
-            {acrossWords.map((word, index) => (
-              <div key={index} className="word-item">
-                <span className="word-number">{index + 1}</span>
-                <span className="word-text">{capitalizeFirstLetter(word.trim())}</span>
+            {acrossWords.map((word) => (
+              <div key={word.id} className="word-item">
+                <span className="word-number">{word.number}</span>
+                <span className="word-text">{capitalizeFirstLetter(word.word.trim())}</span>
               </div>
             ))}
           </div>
@@ -87,10 +87,10 @@ export const WordList = ({ word_orientation }) => {
         </div>
         {downExpanded && !showPuzzle && (
           <div>
-            {downWords.map((word, index) => (
-              <div key={index} className="word-item">
-                <span className="word-number">{index + 1}</span>
-                <span className="word-text">{capitalizeFirstLetter(word.trim())}</span>
+            {downWords.map((word) => (
+              <div key={word.id} className="word-item">
+                <span className="word-number">{word.number}</span>
+                <span className="word-text">{capitalizeFirstLetter(word.word.trim())}</span>
               </div>
             ))}
           </div>
