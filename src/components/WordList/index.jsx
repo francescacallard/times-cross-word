@@ -4,8 +4,8 @@ import ArrowDisabled from '../../assets/arrowDisabled.svg';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
-export const WordList = ({ selectedWordId, setSelectedWordId }) => {
-  const { showPuzzle, crosswordData } = useApp();
+export const WordList = () => {
+  const { showPuzzle, crosswordData, selectedWordId, setSelectedWordId } = useApp();
   const [acrossExpanded, setAcrossExpanded] = useState(false);
   const [downExpanded, setDownExpanded] = useState(false);
   const [acrossWords, setAcrossWords] = useState([]);

@@ -69,7 +69,7 @@
 
 .clue-text {
   flex-grow: 1;
-  padding-left: 2px; /* Small padding to prevent text touching the number */
+
 }
 
 /* Keeping these in case you want to use them later */

@@ -1,14 +1,17 @@
 import React from 'react'
+import { useApp } from '../../context/AppContext'
 import './styles.css'
 
 export const GeneratePuzzle = ({ solution, legend }) => {
-  if (!solution || !legend) {
-    return null; // or return some loading indicator
+  const { selectedWordId, crosswordData } = useApp();
+
+  if (!solution) {
+    return <div>No crossword data available</div>;
   }
 
-  const solutionRows = solution.trim().split('\n')
-  
-  // Parse the legend to get word start positions
+  const rows = solution.trim().split('\n')
+  const words = crosswordData?.words || [];
+
   const wordStarts = legend.split('\n').reduce((acc, line) => {
     const match = line.match(/^(\d+)\. \((\d+),(\d+)\)/)
     if (match) {
@@ -18,29 +21,44 @@ export const GeneratePuzzle = ({ solution, legend }) => {
     return acc
   }, [])
 
-  // Create a 13x13 grid for numbers
   const numberGrid = Array(13).fill().map(() => Array(13).fill(null))
   wordStarts.forEach(({ number, row, col }) => {
     numberGrid[row][col] = number
   })
 
+  const isHighlighted = (rowIndex, cellIndex) => {
+    if (!selectedWordId) return false;
+
+    const [orientation, number] = selectedWordId.split('-');
+    const selectedWord = words.find(word => word.orientation === orientation && word.number === parseInt(number));
+
+    if (!selectedWord) return false;
+
+    const { x_coordinate, y_coordinate, letters } = selectedWord;
+
+    if (orientation === 'across') {
+      return rowIndex === y_coordinate - 1 && 
+             cellIndex >= x_coordinate - 1 && 
+             cellIndex < x_coordinate - 1 + letters;
+    } else if (orientation === 'down') {
+      return cellIndex === x_coordinate - 1 && 
+             rowIndex >= y_coordinate - 1 && 
+             rowIndex < y_coordinate - 1 + letters;
+    }
+
+    return false;
+  };
+
   return (
     <div className="crossword-grid">
-      {solutionRows.map((row, rowIndex) => (
+      {rows.map((row, rowIndex) => (
         <div key={rowIndex} className="crossword-row">
-          {row.trim().split(' ').map((cell, cellIndex) => (
+          {row.trim().split(' ').filter(cell => cell !== '').map((cell, cellIndex) => (
             <div
               key={`${rowIndex}-${cellIndex}`}
-              className={`crossword-cell ${cell === '-' ? 'black' : 'white'}`}
+              className={`crossword-cell-puzzle ${cell === '-' ? 'black' : 'white'} ${isHighlighted(rowIndex, cellIndex) ? 'highlighted' : ''}`}
             >
-              {cell !== '-' && (
-                <>
-                  {numberGrid[rowIndex][cellIndex] && (
-                    <span className="cell-number">{numberGrid[rowIndex][cellIndex]}</span>
-                  )}
-                  <input type="text" maxLength="1" />
-                </>
-              )}
+              {cell !== '-' ? cell.toUpperCase() : ''}
             </div>
           ))}
         </div>

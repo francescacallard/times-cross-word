@@ -43,3 +43,7 @@
 .crossword-cell.white {
   background-color: white;
 }
+
+.crossword-cell.white.highlighted {
+  background: #F3D6A5; 
+}
