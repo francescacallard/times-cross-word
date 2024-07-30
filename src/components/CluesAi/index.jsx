@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useApp } from 'context/AppContext';
 import ArrowDisabled from '../../assets/arrowDisabled.svg';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
 export const CluesAi = ({ clues }) => {
+  const { selectedWordId, setSelectedWordId } = useApp();
   const [acrossExpanded, setAcrossExpanded] = useState(true);
   const [downExpanded, setDownExpanded] = useState(true);
   const [acrossClues, setAcrossClues] = useState([]);
@@ -28,19 +30,27 @@ export const CluesAi = ({ clues }) => {
     }
   };
 
+  const handleClueClick = (clueId) => {
+    setSelectedWordId(clueId === selectedWordId ? null : clueId);
+  };
+
   const renderClue = (clue) => {
     const match = clue.match(/(\d+)\. \((\d+),(\d+)\) (across|down): (.+)/);
     if (match) {
-      const [, number, , , , clueText] = match;
+      const [, number, , , direction, clueText] = match;
+      const clueId = `${direction}-${number}`;
       return (
-        <div className="clue-item">
+        <div 
+          className={`clue-item ${selectedWordId === clueId ? 'highlighted' : ''}`}
+          onClick={() => handleClueClick(clueId)}
+        >
           <span className="clue-number">{number}</span>
           <span className="clue-text">{clueText}</span>
         </div>
       );
     }
     return null;
-  };
+  };;
 
   return (
     <div className='clues-list-container'>

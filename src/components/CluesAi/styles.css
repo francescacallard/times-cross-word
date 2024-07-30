@@ -29,6 +29,7 @@
 .clues-list-section {
   margin-bottom: 0px;
   border: 1px solid #F6F6F6;
+  cursor: pointer;
 }
 
 .clues-list-header {
@@ -68,7 +69,7 @@
 
 .clue-text {
   flex-grow: 1;
-  padding-left: 2px; /* Small padding to prevent text touching the number */
+
 }
 
 /* Keeping these in case you want to use them later */
@@ -76,6 +77,10 @@
   width: 20px;
   height: 20px;
   transition: transform 0.3s ease;
+}
+
+.clue-item.highlighted {
+  background: #F3D6A5;
 }
 
 /* .clues-list-header.expanded .arrow-icon {

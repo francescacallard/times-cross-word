@@ -34,7 +34,7 @@
 .word-list-section {
   margin-bottom: 0px;
 border: solid 1px #F6F6F6;
-
+cursor: pointer;
 }
 
 .word-list-header {
@@ -106,6 +106,9 @@ border: solid 1px #F6F6F6;
   
 }
 
+.word-item.highlighted {
+  background: #F3D6A5;
+}
 /* .word-item:last-child {
   border-bottom: none;
 } */

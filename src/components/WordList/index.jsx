@@ -4,32 +4,34 @@ import ArrowDisabled from '../../assets/arrowDisabled.svg';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
-export const WordList = ({ list }) => {
-  const { showPuzzle } = useApp();
+export const WordList = () => {
+  const { showPuzzle, crosswordData, selectedWordId, setSelectedWordId } = useApp();
   const [acrossExpanded, setAcrossExpanded] = useState(false);
   const [downExpanded, setDownExpanded] = useState(false);
   const [acrossWords, setAcrossWords] = useState([]);
   const [downWords, setDownWords] = useState([]);
 
   useEffect(() => {
-    if (list && list.length > 0) {
-      const words = Array.isArray(list) ? list : list.trim().split('\n');
-      const midpoint = Math.ceil(words.length / 2);
-      setAcrossWords(words.slice(0, midpoint));
-      setDownWords(words.slice(midpoint));
+    if (crosswordData && crosswordData.words && crosswordData.words.length > 0) {
+      const acrossWords = crosswordData.words
+        .filter(item => item.orientation === 'across')
+        .sort((a, b) => a.number - b.number);
+      const downWords = crosswordData.words
+        .filter(item => item.orientation === 'down')
+        .sort((a, b) => a.number - b.number);
+      setAcrossWords(acrossWords);
+      setDownWords(downWords);
     } else {
       setAcrossWords([]);
       setDownWords([]);
     }
-  }, [list]);
+  }, [crosswordData]);
 
   useEffect(() => {
     if (showPuzzle) {
-      // Collapse sections when switching to puzzle mode
       setAcrossExpanded(false);
       setDownExpanded(false);
     } else {
-      // Expand sections when switching to answer mode
       setAcrossExpanded(true);
       setDownExpanded(true);
     }
@@ -49,6 +51,25 @@ export const WordList = ({ list }) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  const handleWordClick = (word) => {
+    const wordId = `${word.orientation}-${word.number}`;
+    setSelectedWordId(wordId === selectedWordId ? null : wordId);
+  };
+
+  const renderWordItem = (word) => {
+    const wordId = `${word.orientation}-${word.number}`;
+    return (
+      <div 
+        key={word.id} 
+        className={`word-item ${selectedWordId === wordId ? 'highlighted' : ''}`}
+        onClick={() => handleWordClick(word)}
+      >
+        <span className="word-number">{word.number}</span>
+        <span className="word-text">{capitalizeFirstLetter(word.word.trim())}</span>
+      </div>
+    );
+  };
+
   return (
     <div className='word-list-container'>
       <h3 className='word-list-title'>Word list</h3>
@@ -64,12 +85,7 @@ export const WordList = ({ list }) => {
         </div>
         {acrossExpanded && !showPuzzle && (
           <div>
-            {acrossWords.map((word, index) => (
-              <div key={index} className="word-item">
-                <span className="word-number">{index + 1}</span>
-                <span className="word-text">{capitalizeFirstLetter(word.trim())}</span>
-              </div>
-            ))}
+            {acrossWords.map(renderWordItem)}
           </div>
         )}
       </div>
@@ -85,12 +101,7 @@ export const WordList = ({ list }) => {
         </div>
         {downExpanded && !showPuzzle && (
           <div>
-            {downWords.map((word, index) => (
-              <div key={index} className="word-item">
-                <span className="word-number">{index + acrossWords.length + 1}</span>
-                <span className="word-text">{capitalizeFirstLetter(word.trim())}</span>
-              </div>
-            ))}
+            {downWords.map(renderWordItem)}
           </div>
         )}
       </div>
