@@ -11,6 +11,8 @@ import { GeneratePuzzle } from 'components/GeneratePuzzle'
 
 export const GenerateCrossword = () => {
   const { crosswordData, showPuzzle } = useApp();
+  const [selectedWordId, setSelectedWordId] = useState(null);
+
 
   console.log('crosswordData from crrrrrrooosssward): ', crosswordData);
   
@@ -38,10 +40,10 @@ export const GenerateCrossword = () => {
             </div>
             <div className='right-side-container'>
               <div className='word-list-container'>
-                <WordList word_orientation={crosswordData?.word_orientation || []} />
+                <WordList word_orientation={crosswordData?.word_orientation || []} selectedWordId={selectedWordId} setSelectedWordId={setSelectedWordId} />
               </div>
               <div className='clues-container'>
-                <CluesAi clues={crosswordData?.legend || []} />
+                <CluesAi clues={crosswordData?.legend || []} selectedWordId={selectedWordId} setSelectedWordId={setSelectedWordId} />
               </div>
             </div>
           </div>

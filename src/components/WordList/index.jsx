@@ -4,7 +4,7 @@ import ArrowDisabled from '../../assets/arrowDisabled.svg';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
-export const WordList = () => {
+export const WordList = ({ selectedWordId, setSelectedWordId }) => {
   const { showPuzzle, crosswordData } = useApp();
   const [acrossExpanded, setAcrossExpanded] = useState(false);
   const [downExpanded, setDownExpanded] = useState(false);
@@ -51,6 +51,25 @@ export const WordList = () => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  const handleWordClick = (word) => {
+    const wordId = `${word.orientation}-${word.number}`;
+    setSelectedWordId(wordId === selectedWordId ? null : wordId);
+  };
+
+  const renderWordItem = (word) => {
+    const wordId = `${word.orientation}-${word.number}`;
+    return (
+      <div 
+        key={word.id} 
+        className={`word-item ${selectedWordId === wordId ? 'highlighted' : ''}`}
+        onClick={() => handleWordClick(word)}
+      >
+        <span className="word-number">{word.number}</span>
+        <span className="word-text">{capitalizeFirstLetter(word.word.trim())}</span>
+      </div>
+    );
+  };
+
   return (
     <div className='word-list-container'>
       <h3 className='word-list-title'>Word list</h3>
@@ -66,12 +85,7 @@ export const WordList = () => {
         </div>
         {acrossExpanded && !showPuzzle && (
           <div>
-            {acrossWords.map((word) => (
-              <div key={word.id} className="word-item">
-                <span className="word-number">{word.number}</span>
-                <span className="word-text">{capitalizeFirstLetter(word.word.trim())}</span>
-              </div>
-            ))}
+            {acrossWords.map(renderWordItem)}
           </div>
         )}
       </div>
@@ -87,12 +101,7 @@ export const WordList = () => {
         </div>
         {downExpanded && !showPuzzle && (
           <div>
-            {downWords.map((word) => (
-              <div key={word.id} className="word-item">
-                <span className="word-number">{word.number}</span>
-                <span className="word-text">{capitalizeFirstLetter(word.word.trim())}</span>
-              </div>
-            ))}
+            {downWords.map(renderWordItem)}
           </div>
         )}
       </div>

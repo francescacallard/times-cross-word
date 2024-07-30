@@ -29,6 +29,7 @@
 .clues-list-section {
   margin-bottom: 0px;
   border: 1px solid #F6F6F6;
+  cursor: pointer;
 }
 
 .clues-list-header {
@@ -76,6 +77,10 @@
   width: 20px;
   height: 20px;
   transition: transform 0.3s ease;
+}
+
+.clue-item.highlighted {
+  background: #F3D6A5;
 }
 
 /* .clues-list-header.expanded .arrow-icon {
