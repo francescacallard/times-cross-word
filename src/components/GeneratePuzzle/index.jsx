@@ -4,6 +4,7 @@ import './styles.css'
 
 export const GeneratePuzzle = ({ solution, legend }) => {
   const { selectedWordId, crosswordData } = useApp();
+  console.log("orientation", crosswordData.word_orientation)
 
   if (!solution) {
     return <div>No crossword data available</div>;
@@ -28,24 +29,22 @@ export const GeneratePuzzle = ({ solution, legend }) => {
 
   const isHighlighted = (rowIndex, cellIndex) => {
     if (!selectedWordId) return false;
-
     const [orientation, number] = selectedWordId.split('-');
     const selectedWord = words.find(word => word.orientation === orientation && word.number === parseInt(number));
-
+    
     if (!selectedWord) return false;
-
     const { x_coordinate, y_coordinate, letters } = selectedWord;
-
+    
     if (orientation === 'across') {
-      return rowIndex === y_coordinate - 1 && 
-             cellIndex >= x_coordinate - 1 && 
+      return rowIndex === y_coordinate - 1 &&
+             cellIndex >= x_coordinate - 1 &&
              cellIndex < x_coordinate - 1 + letters;
     } else if (orientation === 'down') {
-      return cellIndex === x_coordinate - 1 && 
-             rowIndex >= y_coordinate - 1 && 
+      return cellIndex === x_coordinate - 1 &&
+             rowIndex >= y_coordinate - 1 &&
              rowIndex < y_coordinate - 1 + letters;
     }
-
+    
     return false;
   };
 
@@ -58,6 +57,9 @@ export const GeneratePuzzle = ({ solution, legend }) => {
               key={`${rowIndex}-${cellIndex}`}
               className={`crossword-cell-puzzle ${cell === '-' ? 'black' : 'white'} ${isHighlighted(rowIndex, cellIndex) ? 'highlighted' : ''}`}
             >
+              {numberGrid[rowIndex][cellIndex] && (
+                <span className="cell-number">{numberGrid[rowIndex][cellIndex]}</span>
+              )}
               {cell !== '-' ? cell.toUpperCase() : ''}
             </div>
           ))}
