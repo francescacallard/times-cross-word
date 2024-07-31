@@ -37,7 +37,7 @@
 }
 
 .crossword-cell-puzzle input {
-  width: 100%;
+  width: 28px;
   height: 100%;
   border: none;
   background: transparent;
