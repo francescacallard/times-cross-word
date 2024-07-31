@@ -4,12 +4,14 @@ import ArrowDisabled from '../../assets/arrowDisabled.svg';
 import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
-export const CluesAi = ({ clues }) => {
-  const { selectedWordId, setSelectedWordId } = useApp();
+export const CluesAi = () => {
+  const { selectedWordId, setSelectedWordId, crosswordData } = useApp();
   const [acrossExpanded, setAcrossExpanded] = useState(true);
   const [downExpanded, setDownExpanded] = useState(true);
   const [acrossClues, setAcrossClues] = useState([]);
   const [downClues, setDownClues] = useState([]);
+
+  const clues = crosswordData?.legend;
 
   useEffect(() => {
     if (clues && clues.length > 0) {

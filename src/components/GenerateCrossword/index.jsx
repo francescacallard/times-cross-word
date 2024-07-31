@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './styles.css'
 import { useApp } from 'context/AppContext'
 import { CrosswordGridAi } from 'components/CrosswordGridAi'
@@ -10,11 +10,8 @@ import { WordsPlaced } from 'components/WordsPlaced'
 import { GeneratePuzzle } from 'components/GeneratePuzzle'
 
 export const GenerateCrossword = () => {
-  const { crosswordData, showPuzzle, selectedWordId, setSelectedWordId } = useApp();
+  const { crosswordData, showPuzzle } = useApp();
 
-
-  console.log('crosswordData from crrrrrrooosssward): ', crosswordData);
-  
   return (
     <div className='center-wrapper'>
       <div className='whole-app-container'>
@@ -26,9 +23,9 @@ export const GenerateCrossword = () => {
                 {crosswordData && crosswordData.solution ? (
                   <>
                     {showPuzzle ? (
-                      <GeneratePuzzle solution={crosswordData.solution} legend={crosswordData.legend} />
+                      <GeneratePuzzle />
                     ) : (
-                      <CrosswordGridAi solution={crosswordData.solution}/>
+                      <CrosswordGridAi />
                     )}
                     <WordsPlaced />
                   </>
@@ -39,10 +36,10 @@ export const GenerateCrossword = () => {
             </div>
             <div className='right-side-container'>
               <div className='word-list-container'>
-                <WordList word_orientation={crosswordData?.word_orientation || []} />
+                <WordList />
               </div>
               <div className='clues-container'>
-                <CluesAi clues={crosswordData?.legend || []} />
+                <CluesAi  />
               </div>
             </div>
           </div>

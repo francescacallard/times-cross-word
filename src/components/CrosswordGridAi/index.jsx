@@ -2,8 +2,10 @@ import React from 'react'
 import { useApp } from '../../context/AppContext';
 import './styles.css'
 
-export const CrosswordGridAi = ({ solution }) => {
+export const CrosswordGridAi = () => {
   const { selectedWordId, crosswordData } = useApp();
+
+  const solution = crosswordData?.solution;
 
   if (!solution) {
     return <div>No crossword data available</div>;
