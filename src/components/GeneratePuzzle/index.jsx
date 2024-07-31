@@ -2,18 +2,17 @@ import React from 'react'
 import { useApp } from '../../context/AppContext'
 import './styles.css'
 
-export const GeneratePuzzle = ({ solution, legend }) => {
+export const GeneratePuzzle = () => {
   const { selectedWordId, crosswordData } = useApp();
-  console.log("orientation", crosswordData.word_orientation)
 
-  if (!solution) {
+  if (!crosswordData.solution) {
     return <div>No crossword data available</div>;
   }
 
-  const rows = solution.trim().split('\n')
+  const rows = crosswordData.solution.trim().split('\n')
   const words = crosswordData?.words || [];
 
-  const wordStarts = legend.split('\n').reduce((acc, line) => {
+  const wordStarts = crosswordData.legend.split('\n').reduce((acc, line) => {
     const match = line.match(/^(\d+)\. \((\d+),(\d+)\)/)
     if (match) {
       const [_, number, col, row] = match
