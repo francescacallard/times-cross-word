@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useApp } from '../../context/AppContext'
 import './styles.css'
 
 export const GeneratePuzzle = () => {
   const { selectedWordId, crosswordData } = useApp();
+  const [userInput, setUserInput] = useState('');
 
   if (!crosswordData.solution) {
     return <div>No crossword data available</div>;
@@ -47,6 +48,13 @@ export const GeneratePuzzle = () => {
     return false;
   };
 
+  const handleCellChange = (rowIndex, cellIndex, value) => {
+    setUserInput(prev => ({
+      ...prev,
+      [`${rowIndex}-${cellIndex}`]: value.toUpperCase()
+    }))
+  }
+
   return (
     <div className="crossword-grid">
       {rows.map((row, rowIndex) => (
@@ -59,7 +67,15 @@ export const GeneratePuzzle = () => {
               {numberGrid[rowIndex][cellIndex] && (
                 <span className="cell-number">{numberGrid[rowIndex][cellIndex]}</span>
               )}
-              {cell !== '-' ? cell.toUpperCase() : ''}
+              {cell !== '-' ? (
+      <input
+        type="text"
+        maxLength="1"
+        value={userInput[`${rowIndex}-${cellIndex}`] || ''}
+        onChange={(e) => handleCellChange(rowIndex, cellIndex, e.target.value)}
+        className="cell-input"
+      />
+    ) : ''}
             </div>
           ))}
         </div>

@@ -1,13 +1,10 @@
 .crossword-grid {
   display: grid;
-  /* grid-template-columns: repeat(13, 40px);
-  grid-template-rows: repeat(13, 40px); */
   gap: 0;
-  border: 1px solid black;
+  border: 4px solid #000;
   width: fit-content;
   height: fit-content;
-  flex-shrink: 0; /* Prevent the grid from shrinking */
-  border: 4px solid #000;
+  flex-shrink: 0;
 }
 
 .crossword-row {
@@ -25,51 +22,43 @@
   border-right: 0.5px solid #8A8A8A;
   border-bottom: 1px solid #8A8A8A;
   border-left: 0.5px solid #8A8A8A;
-  color: transparent;
 }
 
 .crossword-cell-puzzle.black {
   background-color: black;
 }
 
-.crossword-cell.white {
+.crossword-cell-puzzle.white {
   background-color: white;
+}
+
+.crossword-cell-puzzle.white.highlighted {
+  background-color: #F3D6A5;
 }
 
 .crossword-cell-puzzle input {
   width: 100%;
   height: 100%;
   border: none;
+  background: transparent;
   text-align: center;
-  font-size: 20px;
-  text-transform: uppercase;
-  text-align: center;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 10px;
-  font-style: normal;
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-weight: 700;
-  line-height: normal;
-
-  /* border-top: 0.5px solid #8A8A8A;
-  border-right: 0.5px solid #8A8A8A;
-  border-bottom: 1px solid #8A8A8A;
-  border-left: 0.5px solid #8A8A8A; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .cell-number {
   position: absolute;
   top: 2px;
   left: 2px;
-  font-size: 0.6em;
-  color: #333;
+  font-size: 10px;
   color: #000;
-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-font-size: 10px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
-}
-
-.crossword-cell-puzzle.white.highlighted {
-  background: #F3D6A5;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 700;
+  z-index: 2;
 }
