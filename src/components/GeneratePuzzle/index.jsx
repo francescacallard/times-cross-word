@@ -1,19 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useApp } from '../../context/AppContext'
 import './styles.css'
 
-export const GeneratePuzzle = ({ solution, legend }) => {
+export const GeneratePuzzle = () => {
   const { selectedWordId, crosswordData } = useApp();
-  console.log("orientation", crosswordData.word_orientation)
+  const [userInput, setUserInput] = useState('');
 
-  if (!solution) {
+  if (!crosswordData.solution) {
     return <div>No crossword data available</div>;
   }
 
-  const rows = solution.trim().split('\n')
+  const rows = crosswordData.solution.trim().split('\n')
   const words = crosswordData?.words || [];
 
-  const wordStarts = legend.split('\n').reduce((acc, line) => {
+  const wordStarts = crosswordData.legend.split('\n').reduce((acc, line) => {
     const match = line.match(/^(\d+)\. \((\d+),(\d+)\)/)
     if (match) {
       const [_, number, col, row] = match
@@ -48,6 +48,13 @@ export const GeneratePuzzle = ({ solution, legend }) => {
     return false;
   };
 
+  const handleCellChange = (rowIndex, cellIndex, value) => {
+    setUserInput(prev => ({
+      ...prev,
+      [`${rowIndex}-${cellIndex}`]: value.toUpperCase()
+    }))
+  }
+
   return (
     <div className="crossword-grid">
       {rows.map((row, rowIndex) => (
@@ -60,7 +67,15 @@ export const GeneratePuzzle = ({ solution, legend }) => {
               {numberGrid[rowIndex][cellIndex] && (
                 <span className="cell-number">{numberGrid[rowIndex][cellIndex]}</span>
               )}
-              {cell !== '-' ? cell.toUpperCase() : ''}
+              {cell !== '-' ? (
+      <input
+        type="text"
+        maxLength="1"
+        value={userInput[`${rowIndex}-${cellIndex}`] || ''}
+        onChange={(e) => handleCellChange(rowIndex, cellIndex, e.target.value)}
+        className="cell-input"
+      />
+    ) : ''}
             </div>
           ))}
         </div>
