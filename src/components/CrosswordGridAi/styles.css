@@ -47,3 +47,7 @@
 .crossword-cell.white.highlighted {
   background: #F3D6A5; 
 }
+
+.crossword-cell.white.first-cell {
+  background: #DB6B30;
+}
