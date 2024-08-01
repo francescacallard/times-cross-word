@@ -36,6 +36,11 @@
   background-color: #F3D6A5;
 }
 
+.crossword-cell-puzzle.white.first-cell {
+  background: #DB6B30;
+}
+
+
 .crossword-cell-puzzle input {
   width: 28px;
   height: 100%;

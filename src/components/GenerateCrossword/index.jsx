@@ -27,11 +27,11 @@ export const GenerateCrossword = () => {
                     ) : (
                       <CrosswordGridAi />
                     )}
-                    <WordsPlaced />
                   </>
                 ) : (
                   <EmptyGrid />
                 )}
+                <WordsPlaced crosswordData={crosswordData} />
               </div>
             </div>
             <div className='right-side-container'>
