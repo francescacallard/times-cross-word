@@ -73,7 +73,7 @@ export const PaintGrid = () => {
       <section className="controls">
         <fieldset>
           <legend>
-            Colour: <CellButton color={activeColor} />
+        <CellButton color={activeColor} />
           </legend>
           {Object.entries(COLORS).map(([key, value]) => (
             <CellButton
@@ -84,11 +84,10 @@ export const PaintGrid = () => {
             />
           ))}
         </fieldset>
-        <fieldset>
-          <legend>Options</legend>
-          <button onClick={clearCells}>Clear</button>
-          <button onClick={saveGridState}>Save Grid</button>
-          <button onClick={loadGridState}>Load Grid</button>
+        <fieldset className='paint-grid-buttons-container'>
+          <button className='paint-grid-buttons' onClick={clearCells}>Clear</button>
+          <button className='paint-grid-buttons' onClick={saveGridState}>Save Grid</button>
+          <button className='paint-grid-buttons' onClick={loadGridState}>Load Grid</button>
         </fieldset>
       </section>
       <section
