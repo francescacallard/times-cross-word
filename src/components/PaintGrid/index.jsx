@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useApp } from "context/AppContext";
+import axios from "axios";
 import "./styles.css";
 
 const COLORS = {
@@ -19,6 +21,7 @@ window.addEventListener("mouseup", () => {
 });
 
 export const PaintGrid = () => {
+  const { setGridSaved, setBlackCells } = useApp();
   const [activeColor, setActiveColor] = useState(COLORS.black);
   const [showGrid, setShowGrid] = useState(true);
   const [gridState, setGridState] = useState(
@@ -57,6 +60,9 @@ export const PaintGrid = () => {
     
     localStorage.setItem('gridState', JSON.stringify(saveData));
     console.log('Grid state saved');
+    setGridSaved(true);
+    setBlackCells(blackCells);
+  
   };
 
   const loadGridState = () => {
@@ -65,6 +71,15 @@ export const PaintGrid = () => {
       setGridState(savedData.gridState);
       console.log('Grid state loaded');
       console.log('Black cells:', savedData.blackCells);
+      axios.post('http://localhost:5000/generate-grid', {
+        blackCells: savedData.blackCells
+      })
+      .then(response => {
+        console.log('Black cells sent to backend:', response.data);
+      })
+      .catch(error => {
+        console.error('Error sending black cells to backend:', error);
+      });
     }
   };
 
@@ -88,7 +103,7 @@ export const PaintGrid = () => {
           <legend>Options</legend>
           <button onClick={clearCells}>Clear</button>
           <button onClick={saveGridState}>Save Grid</button>
-          <button onClick={loadGridState}>Load Grid</button>
+          <button onClick={loadGridState}>Load/Send Grid</button>
         </fieldset>
       </section>
       <section

@@ -3,6 +3,7 @@ import { useApp } from 'context/AppContext'
 import './styles.css'
 import Sparkle from '../../assets/whiteSparkle.svg'
 import { Spinner } from 'components/Spinner'
+import axios from 'axios'
 export const GenerateCrosswordButton = () => {
   const {
     setCrosswordData,
@@ -11,7 +12,9 @@ export const GenerateCrosswordButton = () => {
     error,
     setError,
     crosswordData,
-    setCrosswordDataLoaded
+    setCrosswordDataLoaded,
+    gridSaved,
+    blackCells
   } = useApp(); 
 
 
@@ -21,27 +24,40 @@ export const GenerateCrosswordButton = () => {
     setCrosswordDataLoaded(true);
   };
 
-  const generateCrossword = () => {
+  const sendBlackCells = async () => {
+    const savedData = JSON.parse(localStorage.getItem('gridState'));
+    if (savedData && savedData.blackCells) {
+      try {
+        await axios.post('http://localhost:5000/generate-grid', {
+          blackCells: savedData.blackCells
+        });
+        console.log('Black cells sent to backend successfully');
+      } catch (error) {
+        console.error('Error sending black cells to backend:', error);
+        throw error;
+      }
+    }
+  };
+
+  const generateCrossword = async () => {
     setIsLoading(true);
     setError(null);
-    fetch('http://localhost:5000/generate-crossword')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setCrosswordData(data);
-        updateCrosswordData(data);
-        setIsLoading(false);
-        console.log('data from generated button:', data);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setError(error.message);
-        setIsLoading(false);
-      });
+    try {
+      await sendBlackCells();
+      const response = await fetch('http://localhost:5000/generate-crossword');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setCrosswordData(data);
+      updateCrosswordData(data);
+      console.log('data from generated button:', data);
+    } catch (error) {
+      console.error('Error:', error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (error) return <div>Error: {error}</div>;

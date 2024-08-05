@@ -30,13 +30,15 @@ export const AppProvider = ({ children }) => {
   const [crosswordDataLoaded, setCrosswordDataLoaded] = useState(false);
   const [showPuzzle, setShowPuzzle] = useState(false);
   const [selectedWordId, setSelectedWordId] = useState(null)
+  const [gridSaved, setGridSaved] = useState(false);
+  const [blackCells, setBlackCells] = useState([]);
 
   const togglePuzzleView = (view) => {
     setShowPuzzle(view === 'puzzle')
   }
 
   return (
-    <AppContext.Provider value={{ list, setList, randomList, setRandomList, grid, setGrid, crosswordData, setCrosswordData, error, setError, numbers, setNumbers, words, setWords, showList, setShowList, clues, setClues, showCrossword, setShowCrossword, crosswordGrid, setCrosswordGrid, showCrosswordSolution, setShowCrosswordSolution, cluesSolution, setCluesSolution, solutionLoaded, setSolutionLoaded, correctLetters, setCorrectLetters, correctWords, setCorrectWords, checkMode, setCheckMode, listLoaded, setListLoaded, editedWords, setEditedWords, isLoading, setIsLoading, showWordBank, setShowWordBank, showSolution, setShowSolution, showDisplay, setShowDisplay, showLegend, setShowLegend, crosswordDataLoaded, setCrosswordDataLoaded, showPuzzle, setShowPuzzle, togglePuzzleView, selectedWordId, setSelectedWordId  }}>
+    <AppContext.Provider value={{ list, setList, randomList, setRandomList, grid, setGrid, crosswordData, setCrosswordData, error, setError, numbers, setNumbers, words, setWords, showList, setShowList, clues, setClues, showCrossword, setShowCrossword, crosswordGrid, setCrosswordGrid, showCrosswordSolution, setShowCrosswordSolution, cluesSolution, setCluesSolution, solutionLoaded, setSolutionLoaded, correctLetters, setCorrectLetters, correctWords, setCorrectWords, checkMode, setCheckMode, listLoaded, setListLoaded, editedWords, setEditedWords, isLoading, setIsLoading, showWordBank, setShowWordBank, showSolution, setShowSolution, showDisplay, setShowDisplay, showLegend, setShowLegend, crosswordDataLoaded, setCrosswordDataLoaded, showPuzzle, setShowPuzzle, togglePuzzleView, selectedWordId, setSelectedWordId, gridSaved, setGridSaved, blackCells, setBlackCells  }}>
       {children}
     </AppContext.Provider>
   )
