@@ -4,7 +4,6 @@ import './styles.css'
 
 export const CrosswordGridAi = () => {
   const { selectedWordId, crosswordData } = useApp();
-
   const solution = crosswordData?.solution;
 
   if (!solution) {
