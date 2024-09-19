@@ -56,15 +56,12 @@ export const PaintGrid = () => {
     };
     
     localStorage.setItem('gridState', JSON.stringify(saveData));
-    console.log('Grid state saved');
   };
 
   const loadGridState = () => {
     const savedData = JSON.parse(localStorage.getItem('gridState'));
     if (savedData) {
       setGridState(savedData.gridState);
-      console.log('Grid state loaded');
-      console.log('Black cells:', savedData.blackCells);
     }
   };
 

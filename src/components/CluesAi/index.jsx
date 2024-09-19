@@ -40,9 +40,7 @@ export const CluesAi = () => {
     const match = clue.match(/(\d+)\. \((\d+),(\d+)\) (across|down): (.+)/);
     if (match) {
       const [, number, , , direction, clueText] = match;
-      console.log('match', match)
       const clueId = `${direction}-${number}`;
-      console.log('clueId', clueId)
       return (
         <div 
           className={`clue-item ${selectedWordId === clueId ? 'highlighted' : ''}`}

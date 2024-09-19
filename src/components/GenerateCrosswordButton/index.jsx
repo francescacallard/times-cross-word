@@ -35,7 +35,6 @@ export const GenerateCrosswordButton = () => {
         setCrosswordData(data);
         updateCrosswordData(data);
         setIsLoading(false);
-        console.log('data from generated button:', data);
       })
       .catch(error => {
         console.error('Error:', error);
