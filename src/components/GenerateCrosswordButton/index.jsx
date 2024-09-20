@@ -11,20 +11,27 @@ export const GenerateCrosswordButton = () => {
     error,
     setError,
     crosswordData,
-    setCrosswordDataLoaded
+    setCrosswordDataLoaded,
+    puzzleData,
+    setPuzzleData,
   } = useApp(); 
 
 
 
   const updateCrosswordData = (data) => {
-    setCrosswordData(data);
+    // setCrosswordData(data);
+    // setCrosswordDataLoaded(true);
+    const dataArray = Object.values(data);
+    setCrosswordData(dataArray);
+    setPuzzleData(dataArray);
     setCrosswordDataLoaded(true);
   };
 
   const generateCrossword = () => {
+    console.log('generate crossword button clicked');
     setIsLoading(true);
     setError(null);
-    fetch('http://localhost:5000/generate-crossword')
+    fetch('http://localhost:3000/generate-crossword')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -33,6 +40,7 @@ export const GenerateCrosswordButton = () => {
       })
       .then(data => {
         setCrosswordData(data);
+        setPuzzleData(data);
         updateCrosswordData(data);
         setIsLoading(false);
         console.log('data from generated button:', data);
