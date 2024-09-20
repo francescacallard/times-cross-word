@@ -10,6 +10,8 @@ import Index from 'routes/Index'
 import 'App.css'
 
 const App: React.FC = () => (
+
+  
   <BrowserRouter>
   <AppProvider>
     <ReactRoutes>
