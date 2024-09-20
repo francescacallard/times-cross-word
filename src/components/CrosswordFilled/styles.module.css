@@ -1,0 +1,42 @@
+.crosswordContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.crosswordTable {
+  border-collapse: collapse;
+}
+
+.crosswordCell {
+  border: 1px solid red;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  position: relative;
+}
+
+.crosswordCellWhite {
+  background-color: white;
+}
+
+.crosswordCellBlack {
+  background-color: black;
+}
+
+.cellNumber {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  font-size: 8px;
+  color: black;
+}
+
+.cellNumberBlack {
+  color: red;
+}
+
+.cellValue {
+  font-size: 16px;
+  color: black;
+}

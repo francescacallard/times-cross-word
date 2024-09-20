@@ -8,6 +8,7 @@ import { EmptyGrid } from 'components/EmptyGrid'
 import { CrosswordTitle } from 'components/CrosswordTitle'
 import { WordsPlaced } from 'components/WordsPlaced'
 import { GeneratePuzzle } from 'components/GeneratePuzzle'
+import CrosswordFilled from 'components/CrosswordFilled'
 
 export const GenerateCrossword = () => {
   const { crosswordData, showPuzzle } = useApp();
@@ -20,12 +21,12 @@ export const GenerateCrossword = () => {
           <div className='whole-page-container'>
             <div className='left-side-container'>
               <div className='crossword-container'>
-                {crosswordData && crosswordData.solution ? (
+                {crosswordData && !crosswordData.solution ? (
                   <>
                     {showPuzzle ? (
-                      <GeneratePuzzle />
+                       <GeneratePuzzle />
                     ) : (
-                      <CrosswordGridAi />
+                      <CrosswordFilled />
                     )}
                   </>
                 ) : (

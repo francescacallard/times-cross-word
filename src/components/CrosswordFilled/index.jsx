@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useApp } from 'context/AppContext';
+import styles from './styles.module.css';
 
-const TestCrossword = ({ puzzleData }) => {
+const CrosswordFilled = () => {
+  const { puzzleData } = useApp();
   const [grid, setGrid] = useState([]);
   const gridSize = 13;
 
@@ -20,7 +23,7 @@ const TestCrossword = ({ puzzleData }) => {
     // Populate the grid with the puzzle data
     puzzleData.forEach((entry) => {
       const { entryNum, startX, startY, across, down, wordUsedAcross, wordUsedDown } = entry;
-      
+
       console.log('Processing entry:', entry); // Debug log
 
       if (typeof startX !== 'number' || typeof startY !== 'number' || 
@@ -54,37 +57,23 @@ const TestCrossword = ({ puzzleData }) => {
   if (!grid.length) return <div>Loading...</div>;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px' }}>Crossword Puzzle</h2>
-      <table style={{ borderCollapse: 'collapse' }}>
+    <div className={styles.crosswordContainer}>
+      <table className={styles.crosswordTable}>
         <tbody>
           {grid.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, colIndex) => (
-                <td 
-                  key={colIndex} 
-                  style={{
-                    border: '1px solid red',
-                    width: '30px',
-                    height: '30px',
-                    textAlign: 'center',
-                    position: 'relative',
-                    backgroundColor: cell.value ? 'white' : 'black'
-                  }}
+                <td
+                  key={colIndex}
+                  className={`${styles.crosswordCell} ${cell.value ? styles.crosswordCellWhite : styles.crosswordCellBlack}`}
                 >
                   {cell.number && (
-                    <span style={{
-                      position: 'absolute',
-                      top: '1px',
-                      left: '1px',
-                      fontSize: '8px',
-                      color: cell.value ? 'black' : 'red'
-                    }}>
+                    <span className={`${styles.cellNumber} ${!cell.value ? styles.cellNumberBlack : ''}`}>
                       {cell.number}
                     </span>
                   )}
                   {cell.value && (
-                    <span style={{ fontSize: '16px', color: 'black' }}>
+                    <span className={styles.cellValue}>
                       {cell.value}
                     </span>
                   )}
@@ -98,4 +87,4 @@ const TestCrossword = ({ puzzleData }) => {
   );
 };
 
-export default TestCrossword;
+export default CrosswordFilled;
