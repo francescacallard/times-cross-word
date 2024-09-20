@@ -9,6 +9,7 @@ import { CrosswordTitle } from 'components/CrosswordTitle'
 import { WordsPlaced } from 'components/WordsPlaced'
 import { GeneratePuzzle } from 'components/GeneratePuzzle'
 import CrosswordFilled from 'components/CrosswordFilled'
+import { EmptyCrossword } from 'components/EmptyCrossword'
 
 export const GenerateCrossword = () => {
   const { crosswordData, showPuzzle } = useApp();
@@ -24,7 +25,7 @@ export const GenerateCrossword = () => {
                 {crosswordData && !crosswordData.solution ? (
                   <>
                     {showPuzzle ? (
-                       <GeneratePuzzle />
+                       <EmptyCrossword />
                     ) : (
                       <CrosswordFilled />
                     )}

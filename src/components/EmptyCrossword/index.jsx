@@ -2,46 +2,41 @@ import React, { useState, useEffect } from 'react'
 import { useApp } from 'context/AppContext'
 import styles from './styles.module.css'
 
-const CrosswordFilled = () => {
+export const EmptyCrossword = () => {
   const { puzzleData } = useApp()
   const [grid, setGrid] = useState([])
   const gridSize = 13
 
   useEffect(() => {
-    if (!puzzleData || !Array.isArray(puzzleData) || puzzleData.length === 0) {
-      console.error('Invalid or empty puzzle data provided')
-      return
-    }
-
+    console.log('`Checking the data`', puzzleData)
     const newGrid = Array(gridSize).fill().map(() => 
-      Array(gridSize).fill().map(() => ({ value: null, number: null }))
+      Array(gridSize).fill().map(() => ({ isLetter: false, number: null }))
     )
 
     puzzleData.forEach((entry) => {
       const { entryNum, startX, startY, across, down, wordUsedAcross, wordUsedDown } = entry
 
-
       if (typeof startX !== 'number' || typeof startY !== 'number' || 
           startX < 0 || startX >= gridSize || startY < 0 || startY >= gridSize) {
-        return
+        return;
       }
 
       newGrid[startY][startX].number = entryNum;
 
       if (across && wordUsedAcross) {
         for (let i = 0; i < wordUsedAcross.length && (startX + i) < gridSize; i++) {
-          newGrid[startY][startX + i].value = wordUsedAcross[i]
+          newGrid[startY][startX + i].isLetter = true
         }
       }
 
       if (down && wordUsedDown) {
         for (let i = 0; i < wordUsedDown.length && (startY + i) < gridSize; i++) {
-          newGrid[startY + i][startX].value = wordUsedDown[i]
+          newGrid[startY + i][startX].isLetter = true;
         }
       }
     })
 
-    console.log('Final Grid', newGrid);
+    console.log('Final Grid', newGrid)
     setGrid(newGrid)
   }, [puzzleData])
 
@@ -55,16 +50,11 @@ const CrosswordFilled = () => {
               {row.map((cell, colIndex) => (
                 <td
                   key={colIndex}
-                  className={`${styles.crosswordCell} ${cell.value ? styles.crosswordCellWhite : styles.crosswordCellBlack}`}
+                  className={`${styles.crosswordCell} ${cell.isLetter ? styles.crosswordCellWhite : styles.crosswordCellBlack}`}
                 >
                   {cell.number && (
-                    <span className={`${styles.cellNumber} ${!cell.value ? styles.cellNumberBlack : ''}`}>
+                    <span className={styles.cellNumber}>
                       {cell.number}
-                    </span>
-                  )}
-                  {cell.value && (
-                    <span className={styles.cellValue}>
-                      {cell.value}
                     </span>
                   )}
                 </td>
@@ -76,5 +66,3 @@ const CrosswordFilled = () => {
     </div>
   )
 }
-
-export default CrosswordFilled;

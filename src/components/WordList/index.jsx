@@ -1,74 +1,87 @@
-import React, { useState, useEffect } from 'react';
-import { useApp } from 'context/AppContext';
-import ArrowDisabled from '../../assets/arrowDisabled.svg';
-import Arrow from '../../assets/arrow.svg';
-import './styles.css';
+import React, { useState, useEffect } from 'react'
+import { useApp } from 'context/AppContext'
+import ArrowDisabled from '../../assets/arrowDisabled.svg'
+import Arrow from '../../assets/arrow.svg'
+import './styles.css'
 
 export const WordList = () => {
-  const { showPuzzle, crosswordData, selectedWordId, setSelectedWordId } = useApp();
-  const [acrossExpanded, setAcrossExpanded] = useState(false);
-  const [downExpanded, setDownExpanded] = useState(false);
-  const [acrossWords, setAcrossWords] = useState([]);
-  const [downWords, setDownWords] = useState([]);
+  const { showPuzzle, crosswordData, selectedWordId, setSelectedWordId } = useApp()
+  const [acrossExpanded, setAcrossExpanded] = useState(false)
+  const [downExpanded, setDownExpanded] = useState(false)
+  const [acrossWords, setAcrossWords] = useState([])
+  const [downWords, setDownWords] = useState([])
 
   useEffect(() => {
-    if (crosswordData && crosswordData.words && crosswordData.words.length > 0) {
-      const acrossWords = crosswordData.words
-        .filter(item => item.orientation === 'across')
-        .sort((a, b) => a.number - b.number);
-      const downWords = crosswordData.words
-        .filter(item => item.orientation === 'down')
-        .sort((a, b) => a.number - b.number);
-      setAcrossWords(acrossWords);
-      setDownWords(downWords);
+    if (crosswordData && Array.isArray(crosswordData)) {
+      const acrossWords = crosswordData
+        .filter(item => item.wordUsedAcross)
+        .map(item => ({
+          number: item.entryNum,
+          word: item.wordUsedAcross,
+          orientation: 'across'
+        }))
+        .sort((a, b) => a.number - b.number)
+
+      const downWords = crosswordData
+        .filter(item => item.wordUsedDown)
+        .map(item => ({
+          number: item.entryNum,
+          word: item.wordUsedDown,
+          orientation: 'down'
+        }))
+        .sort((a, b) => a.number - b.number)
+
+      setAcrossWords(acrossWords)
+      setDownWords(downWords)
     } else {
-      setAcrossWords([]);
-      setDownWords([]);
+      setAcrossWords([])
+      setDownWords([])
     }
-  }, [crosswordData]);
+  }, [crosswordData])
 
   useEffect(() => {
     if (showPuzzle) {
-      setAcrossExpanded(false);
-      setDownExpanded(false);
+      setAcrossExpanded(false)
+      setDownExpanded(false)
     } else {
-      setAcrossExpanded(true);
-      setDownExpanded(true);
+      setAcrossExpanded(true)
+      setDownExpanded(true)
     }
-  }, [showPuzzle]);
+  }, [showPuzzle])
 
   const toggleSection = (section) => {
     if (!showPuzzle) {
       if (section === 'across') {
-        setAcrossExpanded(!acrossExpanded);
+        setAcrossExpanded(!acrossExpanded)
       } else {
-        setDownExpanded(!downExpanded);
+        setDownExpanded(!downExpanded)
       }
     }
-  };
+  }
 
-  const capitalizeFirstLetter = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  };
+  const formatWord = (string) => {
+    if (string.length === 0) return ''
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+  }
 
   const handleWordClick = (word) => {
-    const wordId = `${word.orientation}-${word.number}`;
-    setSelectedWordId(wordId === selectedWordId ? null : wordId);
-  };
+    const wordId = `${word.orientation}-${word.number}`
+    setSelectedWordId(wordId === selectedWordId ? null : wordId)
+  }
 
   const renderWordItem = (word) => {
-    const wordId = `${word.orientation}-${word.number}`;
+    const wordId = `${word.orientation}-${word.number}`
     return (
       <div 
-        key={word.id} 
+        key={wordId}
         className={`word-item ${selectedWordId === wordId ? 'highlighted' : ''}`}
         onClick={() => handleWordClick(word)}
       >
         <span className="word-number">{word.number}</span>
-        <span className="word-text">{capitalizeFirstLetter(word.word.trim())}</span>
+        <span className="word-text">{formatWord(word.word.trim())}</span>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div className='word-list-container'>
@@ -106,5 +119,5 @@ export const WordList = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
