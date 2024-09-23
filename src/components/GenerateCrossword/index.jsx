@@ -33,7 +33,7 @@ export const GenerateCrossword = () => {
                 ) : (
                   <EmptyGrid />
                 )}
-                <WordsPlaced crosswordData={crosswordData} />
+                {/* <WordsPlaced crosswordData={crosswordData} /> */}
               </div>
             </div>
             <div className='right-side-container'>
