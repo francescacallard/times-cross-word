@@ -12,6 +12,10 @@ export const WordList = () => {
   const [downWords, setDownWords] = useState([])
 
   useEffect(() => {
+    console.log('Selected Word ID:', selectedWordId);
+  }, [selectedWordId]);
+
+  useEffect(() => {
     if (puzzleData && puzzleData.entriesInfo && Array.isArray(puzzleData.entriesInfo)) {
       const acrossWords = puzzleData.entriesInfo
         .filter(([, item]) => item.wordUsedAcross)

@@ -6,10 +6,6 @@ export const GeneratePuzzle = () => {
   const { selectedWordId, crosswordData } = useApp();
   const [userInput, setUserInput] = useState('');
 
-  if (!crosswordData.solution) {
-    return <div>No crossword data available</div>;
-  }
-
   const rows = crosswordData.solution.trim().split('\n')
   const words = crosswordData?.words || [];
 

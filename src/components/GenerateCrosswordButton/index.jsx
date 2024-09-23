@@ -61,7 +61,6 @@ export const GenerateCrosswordButton = () => {
       });
   };
 
-  if (error) return <div>Error: {error}</div>;
   return (
     <div className='generate-crossword-button-container'>  
       <button className='generate-crossword-button' onClick={generateCrossword} disabled={isLoading}>
