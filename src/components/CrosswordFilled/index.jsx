@@ -3,48 +3,63 @@ import { useApp } from 'context/AppContext'
 import styles from './styles.module.css'
 
 const CrosswordFilled = () => {
-  const { puzzleData } = useApp()
+  const { puzzleData, selectedWordId } = useApp()
   const [grid, setGrid] = useState([])
   const gridSize = 13
 
   useEffect(() => {
-    if (!puzzleData || !Array.isArray(puzzleData) || puzzleData.length === 0) {
+    console.log('Selected Word ID from filled:', selectedWordId);
+  }, [selectedWordId]);
+
+  useEffect(() => {
+    if (!puzzleData || !puzzleData.grid || !Array.isArray(puzzleData.grid)) {
       console.error('Invalid or empty puzzle data provided')
       return
     }
 
-    const newGrid = Array(gridSize).fill().map(() => 
-      Array(gridSize).fill().map(() => ({ value: null, number: null }))
+    const newGrid = puzzleData.grid.map((row, rowIndex) =>
+      row.map((cell, colIndex) => ({
+        value: cell.value === '*' ? null : cell.value,
+        number: cell.entry_num,
+        isHighlighted: cell.isHighlighted,
+        wordIds: getWordIds(puzzleData.entriesInfo, rowIndex, colIndex)
+      }))
     )
-
-    puzzleData.forEach((entry) => {
-      const { entryNum, startX, startY, across, down, wordUsedAcross, wordUsedDown } = entry
-
-
-      if (typeof startX !== 'number' || typeof startY !== 'number' || 
-          startX < 0 || startX >= gridSize || startY < 0 || startY >= gridSize) {
-        return
-      }
-
-      newGrid[startY][startX].number = entryNum;
-
-      if (across && wordUsedAcross) {
-        for (let i = 0; i < wordUsedAcross.length && (startX + i) < gridSize; i++) {
-          newGrid[startY][startX + i].value = wordUsedAcross[i]
-        }
-      }
-
-      if (down && wordUsedDown) {
-        for (let i = 0; i < wordUsedDown.length && (startY + i) < gridSize; i++) {
-          newGrid[startY + i][startX].value = wordUsedDown[i]
-        }
-      }
-    })
 
     console.log('Final Grid', newGrid);
     setGrid(newGrid)
   }, [puzzleData])
 
+  const getWordIds = (entriesInfo, row, col) => {
+    const wordIds = []
+    entriesInfo.forEach(([, entry]) => {
+      if (entry.wordUsedAcross && entry.entryStartRow === row && entry.entryStartCol <= col && col < entry.entryStartCol + entry.wordUsedAcross.length) {
+        wordIds.push(`across-${entry.entryNum}`)
+      }
+      if (entry.wordUsedDown && entry.entryStartCol === col && entry.entryStartRow <= row && row < entry.entryStartRow + entry.wordUsedDown.length) {
+        wordIds.push(`down-${entry.entryNum}`)
+      }
+    })
+    return wordIds
+  }
+
+  const isCellHighlighted = (cell) => {
+    return selectedWordId && cell.wordIds.includes(selectedWordId);
+  }
+
+  const isFirstLetterOfSelectedWord = (cell, rowIndex, colIndex) => {
+    if (!selectedWordId || !cell.wordIds.includes(selectedWordId)) return false;
+    
+    const [direction, number] = selectedWordId.split('-');
+    const entry = puzzleData.entriesInfo.find(([, e]) => e.entryNum === parseInt(number));
+    
+    if (entry) {
+      const [, { entryStartRow, entryStartCol }] = entry;
+      return rowIndex === entryStartRow && colIndex === entryStartCol;
+    }
+    
+    return false;
+  }
 
   return (
     <div className={styles.crosswordContainer}>
@@ -55,7 +70,12 @@ const CrosswordFilled = () => {
               {row.map((cell, colIndex) => (
                 <td
                   key={colIndex}
-                  className={`${styles.crosswordCell} ${cell.value ? styles.crosswordCellWhite : styles.crosswordCellBlack}`}
+                  className={`
+                    ${styles.crosswordCell} 
+                    ${cell.value ? styles.crosswordCellWhite : styles.crosswordCellBlack}
+                    ${isCellHighlighted(cell) ? styles.crosswordCellHighlighted : ''}
+                    ${isFirstLetterOfSelectedWord(cell, rowIndex, colIndex) ? styles.crosswordCellFirstLetter : ''}
+                  `}
                 >
                   {cell.number && (
                     <span className={`${styles.cellNumber} ${!cell.value ? styles.cellNumberBlack : ''}`}>

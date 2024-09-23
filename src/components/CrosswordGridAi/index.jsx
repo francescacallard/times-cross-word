@@ -7,10 +7,6 @@ export const CrosswordGridAi = () => {
 
   const solution = crosswordData?.solution;
 
-  if (!solution) {
-    return <div>No crossword data available</div>;
-  }
-
   const rows = solution.trim().split('\n')
   const words = crosswordData?.words || [];
 

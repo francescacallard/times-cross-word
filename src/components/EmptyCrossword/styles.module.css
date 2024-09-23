@@ -49,3 +49,11 @@
   font-weight: 700;
   line-height: normal;
 }
+
+.crosswordCellHighlighted {
+  background-color: #F3D6A5; /* Bright yellow */
+}
+
+.crosswordCellHighlighted.crosswordCellFirstLetter {
+  background: #DB6B30;
+}

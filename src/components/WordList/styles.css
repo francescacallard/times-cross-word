@@ -112,3 +112,7 @@ cursor: pointer;
 /* .word-item:last-child {
   border-bottom: none;
 } */
+
+.crosswordCellHighlighted {
+  background-color: #ffff99; /* or any color you prefer for highlighting */
+}
