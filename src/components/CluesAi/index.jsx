@@ -5,24 +5,43 @@ import Arrow from '../../assets/arrow.svg';
 import './styles.css';
 
 export const CluesAi = () => {
-  const { selectedWordId, setSelectedWordId, crosswordData } = useApp();
+  const { selectedWordId, setSelectedWordId, puzzleData } = useApp();
   const [acrossExpanded, setAcrossExpanded] = useState(true);
   const [downExpanded, setDownExpanded] = useState(true);
   const [acrossClues, setAcrossClues] = useState([]);
   const [downClues, setDownClues] = useState([]);
 
-  const clues = crosswordData?.legend;
-
   useEffect(() => {
-    if (clues && clues.length > 0) {
-      const cluesList = clues.trim().split('\n');
-      setAcrossClues(cluesList.filter(clue => clue.includes('across:')));
-      setDownClues(cluesList.filter(clue => clue.includes('down:')));
+    if (puzzleData && puzzleData.entriesInfo && Array.isArray(puzzleData.entriesInfo)) {
+      const across = [];
+      const down = [];
+
+      puzzleData.entriesInfo.forEach(([, entry]) => {
+        if (entry.wordUsedAcross && entry.hintAcross) {
+          across.push({
+            number: entry.entryNum,
+            direction: 'across',
+            clueText: entry.hintAcross,
+            word: entry.wordUsedAcross
+          });
+        }
+        if (entry.wordUsedDown && entry.hintDown) {
+          down.push({
+            number: entry.entryNum,
+            direction: 'down',
+            clueText: entry.hintDown,
+            word: entry.wordUsedDown
+          });
+        }
+      });
+
+      setAcrossClues(across.sort((a, b) => a.number - b.number));
+      setDownClues(down.sort((a, b) => a.number - b.number));
     } else {
       setAcrossClues([]);
       setDownClues([]);
     }
-  }, [clues]);
+  }, [puzzleData]);
 
   const toggleSection = (section) => {
     if (section === 'across') {
@@ -37,24 +56,18 @@ export const CluesAi = () => {
   };
 
   const renderClue = (clue) => {
-    const match = clue.match(/(\d+)\. \((\d+),(\d+)\) (across|down): (.+)/);
-    if (match) {
-      const [, number, , , direction, clueText] = match;
-      console.log('match', match)
-      const clueId = `${direction}-${number}`;
-      console.log('clueId', clueId)
-      return (
-        <div 
-          className={`clue-item ${selectedWordId === clueId ? 'highlighted' : ''}`}
-          onClick={() => handleClueClick(clueId)}
-        >
-          <span className="clue-number">{number}</span>
-          <span className="clue-text">{clueText}</span>
-        </div>
-      );
-    }
-    return null;
-  };;
+    const clueId = `${clue.direction}-${clue.number}`;
+    return (
+      <div 
+        key={clueId}
+        className={`clue-item ${selectedWordId === clueId ? 'highlighted' : ''}`}
+        onClick={() => handleClueClick(clueId)}
+      >
+        <span className="clue-number">{clue.number}</span>
+        <span className="clue-text">{clue.clueText}</span>
+      </div>
+    );
+  };
 
   return (
     <div className='clues-list-container'>
@@ -71,11 +84,7 @@ export const CluesAi = () => {
         </div>
         {acrossExpanded && (
           <div>
-            {acrossClues.map((clue, index) => (
-              <React.Fragment key={index}>
-                {renderClue(clue)}
-              </React.Fragment>
-            ))}
+            {acrossClues.map(renderClue)}
           </div>
         )}
       </div>
@@ -91,11 +100,7 @@ export const CluesAi = () => {
         </div>
         {downExpanded && (
           <div>
-            {downClues.map((clue, index) => (
-              <React.Fragment key={index}>
-                {renderClue(clue)}
-              </React.Fragment>
-            ))}
+            {downClues.map(renderClue)}
           </div>
         )}
       </div>

@@ -5,29 +5,29 @@ import Arrow from '../../assets/arrow.svg'
 import './styles.css'
 
 export const WordList = () => {
-  const { showPuzzle, crosswordData, selectedWordId, setSelectedWordId } = useApp()
+  const { showPuzzle, puzzleData, selectedWordId, setSelectedWordId } = useApp()
   const [acrossExpanded, setAcrossExpanded] = useState(false)
   const [downExpanded, setDownExpanded] = useState(false)
   const [acrossWords, setAcrossWords] = useState([])
   const [downWords, setDownWords] = useState([])
 
   useEffect(() => {
-    if (crosswordData && Array.isArray(crosswordData)) {
-      const acrossWords = crosswordData
-        .filter(item => item.wordUsedAcross)
-        .map(item => ({
+    if (puzzleData && puzzleData.entriesInfo && Array.isArray(puzzleData.entriesInfo)) {
+      const acrossWords = puzzleData.entriesInfo
+        .filter(([, item]) => item.wordUsedAcross)
+        .map(([, item]) => ({
           number: item.entryNum,
           word: item.wordUsedAcross,
-          orientation: 'across'
+          orientation: 'across',
         }))
         .sort((a, b) => a.number - b.number)
 
-      const downWords = crosswordData
-        .filter(item => item.wordUsedDown)
-        .map(item => ({
+      const downWords = puzzleData.entriesInfo
+        .filter(([, item]) => item.wordUsedDown)
+        .map(([, item]) => ({
           number: item.entryNum,
           word: item.wordUsedDown,
-          orientation: 'down'
+          orientation: 'down',
         }))
         .sort((a, b) => a.number - b.number)
 
@@ -37,7 +37,7 @@ export const WordList = () => {
       setAcrossWords([])
       setDownWords([])
     }
-  }, [crosswordData])
+  }, [puzzleData])
 
   useEffect(() => {
     if (showPuzzle) {
@@ -79,6 +79,7 @@ export const WordList = () => {
       >
         <span className="word-number">{word.number}</span>
         <span className="word-text">{formatWord(word.word.trim())}</span>
+        {word.hint && <span className="word-hint">{word.hint}</span>}
       </div>
     )
   }
