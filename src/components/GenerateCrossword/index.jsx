@@ -10,6 +10,7 @@ import { WordsPlaced } from 'components/WordsPlaced'
 import { GeneratePuzzle } from 'components/GeneratePuzzle'
 import CrosswordFilled from 'components/CrosswordFilled'
 import { EmptyCrossword } from 'components/EmptyCrossword'
+import { ExportToXmlButton } from 'components/ExportToXmlButton'
 
 export const GenerateCrossword = () => {
   const { crosswordData, showPuzzle } = useApp();
@@ -33,7 +34,9 @@ export const GenerateCrossword = () => {
                 ) : (
                   <EmptyGrid />
                 )}
-                {/* <WordsPlaced crosswordData={crosswordData} /> */}
+                <div className='exportContainer'>
+               <ExportToXmlButton />
+               </div>
               </div>
             </div>
             <div className='right-side-container'>
