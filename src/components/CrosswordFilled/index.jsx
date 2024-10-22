@@ -5,7 +5,6 @@ import styles from './styles.module.css'
 const CrosswordFilled = () => {
   const { puzzleData, selectedWordId } = useApp()
   const [grid, setGrid] = useState([])
-  const gridSize = 13
 
   useEffect(() => {
     console.log('Selected Word ID from filled:', selectedWordId);
